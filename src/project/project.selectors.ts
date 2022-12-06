@@ -1,9 +1,9 @@
-import { createSelector } from '@reduxjs/toolkit';
-import { activityReportSelector } from '../activity-report/activity-report-sheet.selectors';
-import { IProject } from '../models/project.model';
-import { IRootState } from '../store';
-import { Id } from '../utils/types';
-import { ProjectState } from './project.state';
+import { createSelector } from "@reduxjs/toolkit";
+import { activityReportSelector } from "../activity-report/store/selectors/activity-report-sheet.selectors";
+import { IProject } from "../models/project.model";
+import { IRootState } from "../store";
+import { Id } from "../utils/types";
+import { ProjectState } from "./project.state";
 
 export const selectRoot = (state: IRootState) => state.project;
 

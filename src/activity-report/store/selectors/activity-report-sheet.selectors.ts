@@ -1,10 +1,10 @@
-import { createSelector } from '@reduxjs/toolkit';
-import { IActivityReport } from '../models/activity-report.model';
-import { IStandardActivity } from '../models/standard-activity.model';
-import { IRootState } from '../store';
-import { Id } from '../utils/types';
-import { ActivityReportSheetState } from './activity-report-sheet.state';
-import { Cells, SheetCell, SheetRow } from './timesheet/common-types';
+import { createSelector } from "@reduxjs/toolkit";
+import { IActivityReport } from "../models/activity-report.model";
+import { IStandardActivity } from "../models/standard-activity.model";
+import { IRootState } from "../store";
+import { Id } from "../utils/types";
+import { ActivityReportSheetState } from "./activity-report-sheet.state";
+import { Cells, SheetCell, SheetRow } from "./timesheet/common-types";
 
 const selectRoot = (state: IRootState) => state.activityReport;
 
@@ -24,24 +24,35 @@ export const isSheetEditableSelector = createSelector(
 );
 
 export const activityReportSelector = createSelector(
-  sheetDataSelector,
-  (_, activityReportId) => activityReportId,
+  [sheetDataSelector, (_, activityReportId) => activityReportId],
   (entities, activityReportId) => entities[activityReportId]
 );
 
 const activitiesSelector = createSelector(
-  sheetDataSelector,
-  activityReportSelector,
-  (_, row) => row && row.entities
+  [activityReportSelector],
+  (row) => row && row.entities
 );
 
 export const activitySelector =
   (activityReportId: Id, day: string) => (state: IRootState) =>
     createSelector(
-      sheetDataSelector,
-      activityReportSelector,
-      (_, __, day) => day,
-      (_, row, day) => row && row.entities && row.entities[day]
+      [activitiesSelector],
+      (activities) => activities && activities[day]
+    )(state, activityReportId, day);
+
+export const hasActivitySelector =
+  (activityReportId: Id, day: string) => (state: IRootState) =>
+    createSelector([activitySelector(activityReportId, day)], (cell) => !!cell)(
+      state,
+      activityReportId,
+      day
+    );
+
+export const activityStatusSelector =
+  (activityReportId: Id, day: string) => (state: IRootState) =>
+    createSelector(
+      [activitySelector(activityReportId, day)],
+      (c) => c && c.status
     )(state, activityReportId, day);
 
 export const activityReportTotalSelector =

@@ -5,10 +5,10 @@ import React, {
   useCallback,
   useContext,
   useMemo,
-} from 'react';
-import { useDispatch } from 'react-redux';
-import { SelectRangeOfDaysPayload } from './activity-report-sheet.actions';
-import { ActivityReportActions } from './activity-report-sheet.state';
+} from "react";
+import { useDispatch } from "react-redux";
+import { SelectRangeOfDaysPayload } from "./activity-report-sheet.actions";
+import { ActivityReportActions } from "./store/activity-report-sheet.state";
 
 //  ********    day1    day2    day3    day4    day5    day6
 //  project1             x                       x       /x
@@ -34,7 +34,7 @@ export const useActivityReportSheet = () => {
 
   if (!ctx)
     throw new Error(
-      'ActivityReportSheetContext is null, please wrap your component with `ActivityReportSheetProvider`'
+      "ActivityReportSheetContext is null, please wrap your component with `ActivityReportSheetProvider`"
     );
   return ctx;
 };

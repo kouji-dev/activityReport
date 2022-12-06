@@ -1,8 +1,8 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ActivityReportActions } from '../activity-report/activity-report-sheet.state';
-import { getFakeProjects } from '../fakeData/fake-data';
-import { IProject } from '../models/project.model';
-import { Entity } from '../utils/types';
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ActivityReportActions } from "../activity-report/store/activity-report-sheet.state";
+import { getFakeProjects } from "../fakeData/fake-data";
+import { IProject } from "../models/project.model";
+import { Entity } from "../utils/types";
 
 const namespace = `project`;
 

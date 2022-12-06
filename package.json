@@ -11,8 +11,6 @@
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
     "@reduxjs/toolkit": "^1.9.0",
-    "@types/react": "^18.0.8",
-    "@types/react-dom": "^18.0.2",
     "antd": "^5.0.1",
     "classnames": "^2.3.2",
     "immer": ">=2.0.0",
@@ -22,9 +20,8 @@
     "lodash.memoize": "^4.1.2",
     "moment": "^2.29.4",
     "node-sass": "^8.0.0",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "react-native": ">=0.59",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-redux": "^7.2.1 || ^8.0.2",
     "redux": "^4.2.0",
     "use-immer": "^0.8.1"
@@ -35,6 +32,7 @@
     "@vitejs/plugin-react": "^2.0.0",
     "sass": "^1.56.1",
     "typescript": "^4.6.4",
-    "vite": "^3.0.0"
+    "vite": "^3.0.0",
+    "vite-tsconfig-paths": "^3.6.0"
   }
 }

@@ -31,6 +31,10 @@ table {
   }
 }
 
+td .ant-badge {
+  position: static !important;
+}
+
 .cell-selection-layer {
   position: absolute;
   top: 0;

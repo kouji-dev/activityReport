@@ -8,7 +8,6 @@ import {
   IStandardActivity,
 } from "../models/standard-activity.model";
 import { ActivityReportSheetState } from "../activity-report/activity-report-sheet.state";
-import moment from "moment";
 import {
   getDefaultHalfDay,
   SheetMode,

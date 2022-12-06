@@ -3,11 +3,9 @@ import React, {
   useState,
   useContext,
   useCallback,
-  useEffect,
   FC,
   PropsWithChildren,
   useMemo,
-  useRef,
 } from "react";
 import { Id } from "../../../../utils/types";
 
@@ -21,8 +19,7 @@ type TimesheetSelectionCellData = {
   selected: boolean;
 };
 
-type TimesheetSelectionApi = {
-  select: (activityReportId: Id, day: string) => void;
+export type TimesheetSelectionApi = {
   startDrag: (key: string) => void;
   endDrag: (key: string) => void;
   onMove: (key: string) => void;
@@ -45,12 +42,10 @@ const TimesheetSelectionActionsContext =
   createContext<TimesheetSelectionApi>(null);
 
 const useTimesheetSelectionContext: () => TimesheetSelectionContext = () => {
-  const [selection, setSelection] = useState({});
   const [dragging, setDragging] = useState(false);
   // const range = useRef<Range>({});
   const [range, setRange] = useState<Set<string>>(new Set());
 
-  const select = useCallback((activityReportId: Id, day: string) => {}, []);
   const startDrag = useCallback((key: string) => {
     setDragging(true);
     // range.current = {
@@ -79,8 +74,8 @@ const useTimesheetSelectionContext: () => TimesheetSelectionContext = () => {
   );
 
   const api = useMemo(
-    () => ({ select, startDrag, endDrag, onMove }),
-    [select, startDrag, endDrag, onMove]
+    () => ({ startDrag, endDrag, onMove }),
+    [startDrag, endDrag, onMove]
   );
 
   const data = useMemo(

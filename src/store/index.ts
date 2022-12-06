@@ -1,15 +1,16 @@
-import { configureStore } from '@reduxjs/toolkit';
-import activityReport from '../activity-report/activity-report-sheet.state';
-import project from '../project/project.state';
-import holidays from '../holidays/holidays.state';
-import { useDispatch as dispatch } from 'react-redux';
-import { projectByIdSelector } from '../project/project.selectors';
+import { configureStore } from "@reduxjs/toolkit";
+import activityReport from "../activity-report/store/activity-report-sheet.state";
+import activityReportSelection from "../activity-report/store/activity-report-sheet-selection.state";
+import project from "../project/project.state";
+import holidays from "../holidays/holidays.state";
+import { useDispatch as dispatch } from "react-redux";
 
 export const store = configureStore({
   reducer: {
     project,
     activityReport,
     holidays,
+    activityReportSelection,
   },
 });
 

@@ -1,8 +1,10 @@
-import React, { FC, memo, useMemo } from "react";
+import { FC, memo } from "react";
 import { Id } from "../../../../utils/types";
-import { useTimesheetSelectionData } from "./timesheet-selection.context";
 import cls from "classnames";
-import { getKey } from "../../../../utils/sheet-utils";
+import { useSelector } from "react-redux";
+import { isCellSelectedSelector } from "../../../store/selectors/activity-report-sheet-selection.selectors";
+import { Badge } from "antd";
+import { activityStatusSelector } from "activity-report/store/selectors/activity-report-sheet.selectors";
 
 interface Props {
   activityReportId: Id;
@@ -11,14 +13,18 @@ interface Props {
 
 export const TimesheetCellSelectionLayer: FC<Props> = memo((props) => {
   const { activityReportId, day } = props;
-  const key = useMemo(() => getKey(activityReportId, day), []);
-  const { selected, dragging } = useTimesheetSelectionData(key);
+  const selected = useSelector(isCellSelectedSelector(activityReportId, day));
+  // const status = useSelector(activityStatusSelector(activityReportId, day));
 
   const rootCls = "cell-selection-layer";
   const className = cls(rootCls, {
     "cell-selected": selected,
-    "cell-dragging": dragging,
+    "cell-dragging": false,
   });
 
-  return <div className={className} />;
+  const content = <div className={className} />;
+
+  if (selected) return <Badge dot>{content}</Badge>;
+
+  return content;
 });
