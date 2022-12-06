@@ -8,13 +8,17 @@ import React, {
   PropsWithChildren,
   useMemo,
   useRef,
-} from 'react';
-import { Id } from '../../../../utils/types';
+} from "react";
+import { Id } from "../../../../utils/types";
 
 type TimesheetSelectionData = {
   dragging: boolean;
-  selection: { [key: string]: any };
   range: Set<string>;
+};
+
+type TimesheetSelectionCellData = {
+  dragging: boolean;
+  selected: boolean;
 };
 
 type TimesheetSelectionApi = {
@@ -71,7 +75,7 @@ const useTimesheetSelectionContext: () => TimesheetSelectionContext = () => {
         addKey(key);
       }
     },
-    [dragging]
+    [dragging, range]
   );
 
   const api = useMemo(
@@ -105,17 +109,27 @@ export const TimesheetSelectionProvider: FC<PropsWithChildren<{}>> = (
 };
 
 export const useTimesheetSelectionData: (
-  activityReportId: Id,
-  day: string
-) => TimesheetSelectionData = (activityReportId: Id, day: string) => {
+  key: string
+) => TimesheetSelectionCellData = (key: string) => {
   const data = useContext(TimesheetSelectionDataContext);
 
-  if (!data)
+  if (!data) {
     console.log(
       `TimesheetSelectionDataContext is available only under parent TimesheetBody`
     );
+  }
 
-  return data;
+  const { dragging, range } = data;
+
+  const cellData: TimesheetSelectionCellData = useMemo(
+    () => ({
+      dragging,
+      selected: range.has(key),
+    }),
+    [dragging, range]
+  );
+
+  return cellData;
 };
 
 export const useTimesheetSelectionActions: (

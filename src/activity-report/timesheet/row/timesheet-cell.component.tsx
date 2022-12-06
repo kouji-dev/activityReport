@@ -1,32 +1,50 @@
-import { Typography } from 'antd';
-import React, { FC, memo, PointerEventHandler, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { Id } from '../../../utils/types';
-import { activitySelector } from '../../activity-report-sheet.selectors';
-import { HeadCol } from '../head/timesheet-head.component';
-import { TimesheetCellSelectionLayer } from './selection/timesheet-cell-selection-layer.component';
-import cls from 'classnames';
-import { useTimesheetSelectionActions } from './selection/timesheet-selection.context';
-import { hasClass } from '../../../utils/classname-utils';
-import { getKey } from '../../../utils/sheet-utils';
+import { Typography } from "antd";
+import React, { FC, memo, PointerEventHandler, useMemo } from "react";
+import { useSelector } from "react-redux";
+import { Id } from "../../../utils/types";
+import { activitySelector } from "../../activity-report-sheet.selectors";
+import { HeadCol } from "../head/timesheet-head.component";
+import { TimesheetCellSelectionLayer } from "./selection/timesheet-cell-selection-layer.component";
+import cls from "classnames";
+import { useTimesheetSelectionActions } from "./selection/timesheet-selection.context";
+import { hasClass } from "../../../utils/classname-utils";
+import { getKey } from "../../../utils/sheet-utils";
 
 interface Props extends HeadCol {
-  activityReportId?: Id;
+  activityReportId: Id;
 }
 
 export const TimesheetCell: FC<Props> = memo((props) => {
   const { isDisabled, isHoliday, isWeekend, activityReportId, day } = props;
+
+  if (isDisabled) return <DisabledTimesheetCell />;
+  if (isHoliday) return <HolidayTimesheetCell />;
+  if (isWeekend) return <WeekendTimesheetCell />;
+
+  return <DefaultTimesheetCell activityReportId={activityReportId} day={day} />;
+});
+
+TimesheetCell.displayName = "TimesheetCell";
+
+interface DefaultCellProps {
+  activityReportId: Id;
+  day: string;
+}
+
+const DefaultTimesheetCell: FC<DefaultCellProps> = memo((props) => {
+  const { activityReportId, day } = props;
   const cell = useSelector(activitySelector(activityReportId, day));
   const { startDrag, endDrag, onMove } = useTimesheetSelectionActions(
     activityReportId,
     day
   );
 
-  const rootCls = 'cell';
+  const rootCls = "cell";
+
   const key = useMemo(() => getKey(activityReportId, day), []);
 
   const onPointerDown: PointerEventHandler<HTMLDivElement> = (ev) => {
-    console.log({ source: 'down', ev });
+    console.log({ source: "down", ev });
     if (hasClass(ev, rootCls)) {
       startDrag(key);
     }
@@ -47,7 +65,7 @@ export const TimesheetCell: FC<Props> = memo((props) => {
   const onPointerCancel: PointerEventHandler<HTMLDivElement> = (ev) => {
     if (hasClass(ev, rootCls))
       console.log({
-        source: 'cancel',
+        source: "cancel",
         ev,
       });
   };
@@ -55,21 +73,16 @@ export const TimesheetCell: FC<Props> = memo((props) => {
   const onPointerCancelCapture: PointerEventHandler<HTMLDivElement> = (ev) => {
     if (hasClass(ev, rootCls))
       console.log({
-        source: 'cancel capture',
+        source: "cancel capture",
         ev,
       });
   };
 
-  if (isDisabled) return <DisabledTimesheetCell />;
-  if (isHoliday) return <HolidayTimesheetCell />;
-  if (isWeekend) return <WeekendTimesheetCell />;
-
   const className = cls({
     cell: !!cell,
-    'empty-cell': !cell,
   });
 
-  if (!cell) return <td className={className}></td>;
+  if (!cell) return <EmptyTimesheetCell />;
 
   return (
     <td
@@ -89,8 +102,17 @@ export const TimesheetCell: FC<Props> = memo((props) => {
   );
 });
 
+DefaultTimesheetCell.displayName = "DefaultTimesheetCell";
+
+const EmptyTimesheetCell = memo(() => {
+  const className = cls("cell", "cell-empty");
+  return <td className={className} />;
+});
+
+EmptyTimesheetCell.displayName = "EmptyTimesheetCell";
+
 const DisabledTimesheetCell = memo(() => {
-  const className = cls('cell', 'cell-disabled');
+  const className = cls("cell", "cell-disabled");
   return (
     <td className={className}>
       <Typography.Text>D</Typography.Text>
@@ -99,7 +121,7 @@ const DisabledTimesheetCell = memo(() => {
 });
 
 const HolidayTimesheetCell = memo(() => {
-  const className = cls('cell', 'cell-holiday');
+  const className = cls("cell", "cell-holiday");
   return (
     <td className={className}>
       <Typography.Text>H</Typography.Text>
@@ -108,7 +130,7 @@ const HolidayTimesheetCell = memo(() => {
 });
 
 const WeekendTimesheetCell = memo(() => {
-  const className = cls('cell', 'cell-weekend');
+  const className = cls("cell", "cell-weekend");
   return (
     <td className={className}>
       <Typography.Text>
@@ -117,3 +139,5 @@ const WeekendTimesheetCell = memo(() => {
     </td>
   );
 });
+
+WeekendTimesheetCell.displayName = "WeekendTimesheetCell";

@@ -1,28 +1,23 @@
-import { fakeProject, IProject } from '../models/project.model';
+import { fakeProject, IProject } from "../models/project.model";
 import {
   fakeActivityReport,
   IActivityReport,
-} from '../models/activity-report.model';
+} from "../models/activity-report.model";
 import {
   fakeStandardActivity,
   IStandardActivity,
-} from '../models/standard-activity.model';
-import { ActivityReportSheetState } from '../activity-report/activity-report-sheet.state';
-import moment = require('moment');
+} from "../models/standard-activity.model";
+import { ActivityReportSheetState } from "../activity-report/activity-report-sheet.state";
+import moment from "moment";
 import {
   getDefaultHalfDay,
   SheetMode,
   SheetRow,
-} from '../activity-report/timesheet/common-types';
-import {
-  fromServerFormat,
-  isHoliday,
-  isWeekend,
-  toServerFormat,
-} from '../utils/date-utils';
-import { ProjectState } from '../store/project.state';
-import keyBy from 'lodash.keyby';
-import memoize from 'lodash.memoize';
+} from "../activity-report/timesheet/common-types";
+import { fromServerFormat, isHoliday, isWeekend } from "../utils/date-utils";
+import { ProjectState } from "../store/project.state";
+import keyBy from "lodash.keyby";
+import memoize from "lodash.memoize";
 
 const fakeProjects = (p: number = 20) => {
   return [...Array(p).keys()].map(() => fakeProject());
@@ -32,7 +27,7 @@ export const getFakeProjects = memoize((): ProjectState => {
   const projects: IProject[] = fakeProjects();
   const projectState: ProjectState = {
     ids: projects.map((project) => project.id),
-    entities: keyBy(projects, 'id'),
+    entities: keyBy(projects, "id"),
   };
   return projectState;
 });
