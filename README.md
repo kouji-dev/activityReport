@@ -1,2 +1,0 @@
-# activityReport
-Created with CodeSandbox
