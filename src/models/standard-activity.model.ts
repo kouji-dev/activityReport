@@ -1,8 +1,8 @@
-import { faker } from '@faker-js/faker';
-import moment = require('moment');
-import { SheetCellStatus } from '../activity-report/timesheet/common-types';
-import memoize from 'lodash.memoize';
-import { isHoliday, isWeekend, toServerFormat } from '../utils/date-utils';
+import { faker } from "@faker-js/faker";
+import moment from "moment";
+import { SheetCellStatus } from "../activity-report/timesheet/common-types";
+import memoize from "lodash.memoize";
+import { isHoliday, isWeekend, toServerFormat } from "../utils/date-utils";
 
 export interface IStandardActivity {
   id?: string;
@@ -16,13 +16,13 @@ export interface IStandardActivity {
 }
 
 export const isActivityApproved = (activity: IStandardActivity) =>
-  activity?.validationStatus === 'APPROVED';
+  activity?.validationStatus === "APPROVED";
 
 export const isActivityPending = (activity: IStandardActivity) =>
-  activity?.validationStatus === 'PENDING';
+  activity?.validationStatus === "PENDING";
 
 export const isActivityRejected = (activity: IStandardActivity) =>
-  activity?.validationStatus === 'REJECTED';
+  activity?.validationStatus === "REJECTED";
 
 export type IStandardActivityMap = Record<number, IStandardActivity[]>;
 
@@ -87,9 +87,9 @@ const _fakeStandardActivity = (activityReportId: number): IStandardActivity => {
     afternoon,
     validationDate: faker.date.between(onMinus, onPlus),
     validationStatus: faker.helpers.arrayElement([
-      'APPROVED',
-      'REJECTED',
-      'PENDING',
+      "APPROVED",
+      "REJECTED",
+      "PENDING",
     ]) as SheetCellStatus,
     activityReportId,
   };
