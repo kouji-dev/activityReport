@@ -1,4 +1,4 @@
-import { useTimesheetSelectionApi } from "activity-report/timesheet/row/selection/redux/use-timesheet-selection-api.hook";
+import { useTimesheetSelectionApi } from "activity-report/timesheet/selection/use-timesheet-selection-api.hook";
 import { PointerEventHandler, useMemo } from "react";
 import { hasClass } from "utils/classname-utils";
 import { getKey } from "utils/sheet-utils";
@@ -26,10 +26,6 @@ export const WithCancalablePointer =
     const rootCls = "cell";
 
     const onPointerUp: PointerEventHandler<HTMLDivElement> = (ev) => {
-      console.log("up bro", {
-        ev,
-        test: hasClass(ev, rootCls),
-      });
       if (hasClass(ev, rootCls)) endDrag(key);
     };
 

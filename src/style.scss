@@ -1,10 +1,18 @@
 :root {
   --cell-width: 30px;
   --cell-max-width: 30px;
+  --cell-border-radius: 5px;
   --timesheet-border-color: #f5f5f5;
 }
 
+#root {
+  padding: 16px;
+  background-color: #f5f5f5;
+}
+
 table {
+  background-color: white;
+  border-radius: 8px;
   th {
     min-width: var(--cell-width);
     height: 36px;
@@ -20,9 +28,21 @@ table {
       max-width: var(--cell-max-width);
     }
   }
+  
+  tr {
+    &:first-child,&:last-child {
+      td {
+      &:first-child,&:last-child {
+        border-radius: 20px
+      }
+    }
+    }
+  }
   td {
     position: relative;
     text-align: center;
+    border: 1px solid #f0f0f0;
+    border-radius: var(--cell-border-radius);
   }
 
   th,
@@ -33,6 +53,10 @@ table {
 
 td .ant-badge {
   position: static !important;
+  & .ant-badge-dot {
+    width: 10px;
+    height: 10px;
+  }
 }
 
 .cell-selection-layer {
@@ -42,12 +66,29 @@ td .ant-badge {
   left: 0;
   bottom: 0;
   z-index: -1;
+  border-radius: var(--cell-border-radius)
+}
+
+.cell:hover {
+  background-color: #00D7F0;
 }
 
 .cell-selected {
-  background-color: #f9fae1;
+  background-color: #f9fae1 !important;
 }
 
 .cell-dragging {
   cursor: grab;
+}
+
+.cell-approved {
+  background-color: #427839;
+}
+
+.cell-rejected {
+  background-color: #F00000;
+}
+
+.cell-pending {
+  background-color: #F0BC00;
 }

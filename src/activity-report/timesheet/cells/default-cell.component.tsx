@@ -3,10 +3,10 @@ import { FC, memo, PointerEventHandler, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { hasClass } from "utils/classname-utils";
 import { getKey } from "utils/sheet-utils";
-import { useTimesheetSelectionApi } from "../row/selection/redux/use-timesheet-selection-api.hook";
+import { useTimesheetSelectionApi } from "../selection/use-timesheet-selection-api.hook";
 import cls from "classnames";
 import { EmptyCell } from "./empty-cell.component";
-import { TimesheetCellSelectionLayer } from "../row/selection/timesheet-cell-selection-layer.component";
+import { TimesheetCellSelectionLayer } from "../selection/timesheet-cell-selection-layer.component";
 import { Id } from "utils/types";
 
 interface DefaultCellProps {

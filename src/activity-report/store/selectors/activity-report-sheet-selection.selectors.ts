@@ -14,9 +14,11 @@ const rangeSelector = createSelector(
 export const isCellSelectedSelector =
   (activityReportId: Id, day: string) => (state: IRootState) =>
     createSelector(
-      rangeSelector,
-      (_, activityReportId: Id, day: string) => getKey(activityReportId, day),
-      (range: string[], key: string) => range.includes(key)
+      [
+        rangeSelector,
+        (_, activityReportId: Id, day: string) => getKey(activityReportId, day),
+      ],
+      (range: Set<string>, key: string) => range.has(key)
     )(state, activityReportId, day);
 
 export const isDraggingSelector = createSelector(

@@ -1,7 +1,12 @@
-import { useCallback } from "react";
-import { useDispatch } from "../../../../../store";
-import { TimesheetSelectionApi } from "../context/timesheet-selection.context";
-import { ActivityReportSelectionActions } from "../../../../store/activity-report-sheet-selection.state";
+import { ActivityReportSelectionActions } from "activity-report/store/activity-report-sheet-selection.state";
+import { useCallback, useMemo } from "react";
+import { useDispatch } from "store";
+
+export type TimesheetSelectionApi = {
+  startDrag: () => void;
+  onMove: () => void;
+  endDrag: () => void;
+};
 
 export const useTimesheetSelectionApi: (
   key: string
@@ -20,11 +25,14 @@ export const useTimesheetSelectionApi: (
     dispatch(ActivityReportSelectionActions.endDrag(key));
   }, []);
 
-  const api: TimesheetSelectionApi = {
-    startDrag,
-    onMove,
-    endDrag,
-  };
+  const api: TimesheetSelectionApi = useMemo(
+    () => ({
+      startDrag,
+      onMove,
+      endDrag,
+    }),
+    []
+  );
 
   return api;
 };

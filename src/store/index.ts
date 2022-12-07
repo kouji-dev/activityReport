@@ -4,13 +4,23 @@ import activityReportSelection from "../activity-report/store/activity-report-sh
 import project from "../project/project.state";
 import holidays from "../holidays/holidays.state";
 import { useDispatch as dispatch } from "react-redux";
+import { enableMapSet } from "immer";
+
+enableMapSet();
 
 export const store = configureStore({
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }),
   reducer: {
     project,
     activityReport,
     holidays,
     activityReportSelection,
+  },
+  devTools: {
+    serialize: {
+      options: { map: true, set: true },
+    },
   },
 });
 

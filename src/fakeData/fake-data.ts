@@ -18,7 +18,7 @@ import { ProjectState } from "../store/project.state";
 import keyBy from "lodash.keyby";
 import memoize from "lodash.memoize";
 
-const fakeProjects = (p: number = 20) => {
+const fakeProjects = (p: number = 10) => {
   return [...Array(p).keys()].map(() => fakeProject());
 };
 
@@ -38,11 +38,11 @@ export const getFakeActivityReports = (
   projectIds: number[]
 ): ActivityReportSheetState => {
   const activityReports: IActivityReport[] = fakeActivityReports(projectIds);
-  const activities: Record<number, IStandardActivity[]> =
-    activityReports.reduce((acc, activityReport) => {
-      acc[activityReport.id] = fakeStandardActivity(activityReport.id);
-      return acc;
-    }, {});
+  // const activities: Record<number, IStandardActivity[]> =
+  //   activityReports.reduce((acc, activityReport) => {
+  //     acc[activityReport.id] = fakeStandardActivity(activityReport.id);
+  //     return acc;
+  //   }, {});
 
   const result: ActivityReportSheetState = {
     ids: [],
@@ -56,7 +56,11 @@ export const getFakeActivityReports = (
 
   for (const activityReport of activityReports) {
     const { id, ...rest } = activityReport;
-    result.entities[id] = getSheetRow(id, activityReport, activities);
+    result.entities[id] = {
+      ids: [],
+      entities: {},
+      meta: activityReport,
+    };
   }
 
   return result;

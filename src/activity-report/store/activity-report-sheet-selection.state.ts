@@ -4,10 +4,10 @@ const namespace = `activity-report-selection`;
 
 export interface ActivityReportSheetSelectionState {
   dragging?: boolean;
-  range: Array<string>;
+  range: Set<string>;
 }
 export const initialState: ActivityReportSheetSelectionState = {
-  range: [],
+  range: new Set<string>(),
 };
 
 export const activityReportSelectionState = createSlice({
@@ -15,15 +15,16 @@ export const activityReportSelectionState = createSlice({
   initialState,
   reducers: {
     startDrag: (state, action: PayloadAction<string>) => {
+      const key = action.payload;
       state.dragging = true;
-      state.range.push(action.payload);
+      state.range.add(key);
     },
     onMove: (state, action: PayloadAction<string>) => {
       const key = action.payload;
       if (key) {
-        const keyNotFound = !state.range.includes(key);
+        const keyNotFound = !state.range.has(key);
         if (state.dragging && keyNotFound) {
-          state.range.push(key);
+          state.range.add(key);
         }
       }
     },
@@ -31,7 +32,7 @@ export const activityReportSelectionState = createSlice({
       const key = action.payload;
       state.dragging = false;
       if (key) {
-        state.range.push(action.payload);
+        state.range.add(action.payload);
       }
     },
   },

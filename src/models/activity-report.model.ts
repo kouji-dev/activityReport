@@ -1,6 +1,6 @@
-import { faker } from '@faker-js/faker';
-import { getRandomDate } from '../utils/date-utils';
-import memoize from 'lodash.memoize';
+import { faker } from "@faker-js/faker";
+import { getRandomDate } from "../utils/date-utils";
+import memoize from "lodash.memoize";
 
 export interface IActivityReport {
   id: number;
@@ -18,10 +18,8 @@ export const fakeActivityReport = memoize(
     month: number = 9,
     year: number = 2022
   ): IActivityReport => {
-    const submitted = faker.datatype.boolean();
-    const submissionDate: string | undefined = submitted
-      ? getRandomDate(month, year)
-      : undefined;
+    const submitted = false;
+    const submissionDate: string | undefined = undefined;
 
     const activityReport: IActivityReport = {
       id: faker.datatype.number(),
