@@ -4,8 +4,16 @@ import {
   CancelablePointerProps,
   WithCancalablePointer,
 } from "@shared/components/cancelable-pointer-events.hoc";
+import { TimesheetCellSelectionLayer } from "../selection/timesheet-cell-selection-layer.component";
 
-const CellPointerListener = WithCancalablePointer(() => <Fragment />);
+const CellPointerListener = WithCancalablePointer(
+  ({ activityReportId, day }: CancelablePointerProps) => (
+    <TimesheetCellSelectionLayer
+      activityReportId={activityReportId}
+      day={day}
+    />
+  )
+);
 
 interface Props extends CancelablePointerProps {}
 

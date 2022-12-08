@@ -56,6 +56,7 @@ td .ant-badge {
   & .ant-badge-dot {
     width: 10px;
     height: 10px;
+    z-index: 9999;
   }
 }
 
@@ -65,12 +66,13 @@ td .ant-badge {
   right: 0;
   left: 0;
   bottom: 0;
-  z-index: -1;
   border-radius: var(--cell-border-radius)
 }
 
-.cell:hover {
-  background-color: #00D7F0;
+.cell, .cell-selection-layer {
+  &:hover {
+    background-color: #00D7F0 !important; 
+  }
 }
 
 .cell-selected {

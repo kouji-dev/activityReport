@@ -1,5 +1,5 @@
-import { Id } from '../../utils/types';
-import { HeadCols } from './head/timesheet-head.component';
+import { Id } from "../../utils/types";
+import { HeadCols } from "./head/timesheet-head.component";
 
 export type HalfDay = {
   is: boolean;
@@ -16,9 +16,9 @@ export const getDefaultHalfDay: (is: boolean) => HalfDay = (is: boolean) => ({
   editable: true,
 });
 export enum SheetCellStatus {
-  PENDING = 'PENDING',
-  APPROVED = 'APPROVED',
-  REJECTED = 'REJECTED',
+  PENDING = "PENDING",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
 }
 export enum SheetMode {
   EDITTING,
@@ -37,9 +37,9 @@ export type SheetCell<T> = {
 };
 
 export enum SheetStatus {
-  PENDING = 'PENDING',
-  SUBMITTED = 'SUBMITTED',
-  APPROVED = 'APPROVED',
+  PENDING = "PENDING",
+  SUBMITTED = "SUBMITTED",
+  APPROVED = "APPROVED",
 }
 
 export type Cells<T> = Record<Id, SheetCell<T>>;
@@ -62,3 +62,14 @@ export type SheetData<P, T> = {
   editable?: boolean;
   mode: SheetMode;
 };
+
+export type CellIdentifier = {
+  day: string;
+  activityReportId: Id;
+} & { key: string };
+
+export type RowKey = Id;
+
+export type RowCellIdentifiers = {
+  rowKey: RowKey;
+} & CellIdentifier;

@@ -37,6 +37,8 @@ export const TimesheetCellSelectionLayer: FC<Props> = memo((props) => {
       color = COLORS.RED;
     } else if (status == SheetCellStatus.PENDING) {
       color = COLORS.YELLOW;
+    } else {
+      color = COLORS.BLUE;
     }
 
     return (

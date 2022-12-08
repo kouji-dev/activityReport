@@ -1,76 +1,37 @@
-import { hasActivitySelector } from "activity-report/store/selectors/activity-report-sheet.selectors";
-import { FC, memo, PointerEventHandler, useMemo } from "react";
-import { useSelector } from "react-redux";
-import { hasClass } from "utils/classname-utils";
-import { getKey } from "utils/sheet-utils";
-import { useTimesheetSelectionApi } from "../selection/use-timesheet-selection-api.hook";
+import { FC, memo } from "react";
 import cls from "classnames";
-import { EmptyCell } from "./empty-cell.component";
+import {
+  CancelablePointerProps,
+  WithCancalablePointer,
+} from "@shared/components/cancelable-pointer-events.hoc";
 import { TimesheetCellSelectionLayer } from "../selection/timesheet-cell-selection-layer.component";
-import { Id } from "utils/types";
+import { useSelector } from "react-redux";
+import { hasActivitySelector } from "activity-report/store/selectors/activity-report-sheet.selectors";
+import { EmptyCell } from "./empty-cell.component";
 
-interface DefaultCellProps {
-  activityReportId: Id;
-  day: string;
-}
-
-export const DefaultCell: FC<DefaultCellProps> = memo((props) => {
-  const { activityReportId, day } = props;
-  const hasCell = useSelector(hasActivitySelector(activityReportId, day));
-  const key = useMemo(() => getKey(activityReportId, day), []);
-  const { startDrag, endDrag, onMove } = useTimesheetSelectionApi(key);
-
-  const rootCls = "cell";
-
-  const onPointerDown: PointerEventHandler<HTMLDivElement> = (ev) => {
-    if (hasClass(ev, rootCls)) {
-      startDrag(key);
-    }
-  };
-
-  const onPointerMove: PointerEventHandler<HTMLDivElement> = (ev) => {
-    if (hasClass(ev, rootCls)) {
-      onMove(key);
-    }
-  };
-
-  const onPointerUp: PointerEventHandler<HTMLDivElement> = (ev) => {
-    if (hasClass(ev, rootCls)) {
-      endDrag(key);
-    }
-  };
-
-  const onPointerCancel: PointerEventHandler<HTMLDivElement> = (ev) => {
-    if (hasClass(ev, rootCls)) endDrag(key);
-  };
-
-  const onPointerCancelCapture: PointerEventHandler<HTMLDivElement> = (ev) => {
-    if (hasClass(ev, rootCls)) endDrag(key);
-  };
-
-  const className = cls({
-    cell: hasCell,
-  });
-
-  if (!hasCell)
-    return <EmptyCell activityReportId={activityReportId} day={day} />;
-
-  return (
-    <td
-      className={className}
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={onPointerUp}
-      onPointerCancel={onPointerCancel}
-      onPointerCancelCapture={onPointerCancelCapture}
-    >
+const CellPointerListener = WithCancalablePointer(
+  ({ activityReportId, day }: CancelablePointerProps) => (
+    <>
       1
       <TimesheetCellSelectionLayer
         activityReportId={activityReportId}
         day={day}
       />
-    </td>
-  );
+    </>
+  )
+);
+
+interface Props extends CancelablePointerProps {}
+
+export const DefaultCell: FC<Props> = memo((props) => {
+  const { activityReportId, day } = props;
+  const className = cls("cell");
+  const hasCell = useSelector(hasActivitySelector(activityReportId, day));
+
+  if (!hasCell)
+    return <EmptyCell activityReportId={activityReportId} day={day} />;
+
+  return <CellPointerListener {...props} className={className} />;
 });
 
-DefaultCell.displayName = "DefaultTimesheetCell";
+DefaultCell.displayName = "DefaultCell";

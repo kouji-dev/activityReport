@@ -6,22 +6,32 @@ import { ActivityReportSheetSelectionState } from "../activity-report-sheet-sele
 
 const selectRoot = (state: IRootState) => state.activityReportSelection;
 
-const rangeSelector = createSelector(
+const selectionSelector = createSelector(
   selectRoot,
-  (state: ActivityReportSheetSelectionState) => state.range
+  (state: ActivityReportSheetSelectionState) => state.selection
 );
 
 export const isCellSelectedSelector =
   (activityReportId: Id, day: string) => (state: IRootState) =>
     createSelector(
       [
-        rangeSelector,
+        selectionSelector,
         (_, activityReportId: Id, day: string) => getKey(activityReportId, day),
       ],
-      (range: Set<string>, key: string) => range.has(key)
+      (selection: Set<string>, key: string) => selection.has(key)
     )(state, activityReportId, day);
 
-export const isDraggingSelector = createSelector(
+const draggingSelector = createSelector(
   selectRoot,
-  (state: ActivityReportSheetSelectionState) => state.dragging
+  (state: ActivityReportSheetSelectionState) => state.selection
 );
+
+export const isDraggingSelector =
+  (activityReportId: Id) => (state: IRootState) =>
+    createSelector(
+      [
+        draggingSelector,
+        (_, activityReportId: Id) => activityReportId,
+      ],
+      (dragging: Set<string>, key: string) => dragging.has(key)
+    )(state, activityReportId);

@@ -1,39 +1,48 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, current } from "@reduxjs/toolkit";
+import {
+  RowCellIdentifiers,
+  RowKey,
+} from "activity-report/timesheet/common-types";
 
 const namespace = `activity-report-selection`;
 
 export interface ActivityReportSheetSelectionState {
-  dragging?: boolean;
-  range: Set<string>;
+  dragging: Set<RowKey>;
+  selection: Set<string>;
 }
 export const initialState: ActivityReportSheetSelectionState = {
-  range: new Set<string>(),
+  selection: new Set<string>(),
+  dragging: new Set<RowKey>(),
 };
 
 export const activityReportSelectionState = createSlice({
   name: `${namespace}`,
   initialState,
   reducers: {
-    startDrag: (state, action: PayloadAction<string>) => {
-      const key = action.payload;
-      state.dragging = true;
-      state.range.add(key);
+    startDrag: (state, action: PayloadAction<RowCellIdentifiers>) => {
+      const payload: RowCellIdentifiers = action.payload;
+      state.dragging.add(payload.rowKey);
+      state.selection.add(payload.key);
     },
-    onMove: (state, action: PayloadAction<string>) => {
-      const key = action.payload;
-      if (key) {
-        const keyNotFound = !state.range.has(key);
-        if (state.dragging && keyNotFound) {
-          state.range.add(key);
-        }
+    onMove: (state, action: PayloadAction<RowCellIdentifiers>) => {
+      const payload: RowCellIdentifiers = action.payload;
+      const keyNotFound = !state.selection.has(payload.key);
+      if (state.dragging.size && keyNotFound) {
+        state.selection.add(payload.key);
       }
     },
-    endDrag: (state, action: PayloadAction<string>) => {
-      const key = action.payload;
-      state.dragging = false;
-      if (key) {
-        state.range.add(action.payload);
+    onRangeMove: (state, action: PayloadAction<RowCellIdentifiers>) => {
+      const payload: RowCellIdentifiers = action.payload;
+      const keyNotFound = !state.selection.has(payload.key);
+      console.log({ d: current(state.dragging) });
+      if (state.dragging.has(payload.rowKey) && keyNotFound) {
+        state.selection.add(payload.key);
       }
+    },
+    endDrag: (state, action: PayloadAction<RowCellIdentifiers>) => {
+      const payload: RowCellIdentifiers = action.payload;
+      state.dragging.delete(payload.rowKey);
+      state.selection.add(payload.key);
     },
   },
 });
