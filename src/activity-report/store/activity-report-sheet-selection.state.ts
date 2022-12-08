@@ -77,6 +77,7 @@ export const activityReportSelectionState = createSlice({
       const { dragging, selection, ctrl, range } = state;
 
       const isRowDragging = dragging.has(payload.rowKey);
+
       if (isRowDragging && ctrl) {
         // selection.add(payload.key);
         range[1] = { date: payload.day };
