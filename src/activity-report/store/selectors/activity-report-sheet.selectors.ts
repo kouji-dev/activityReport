@@ -1,10 +1,18 @@
-import { createSelector } from '@reduxjs/toolkit';
-import { IActivityReport } from '../models/activity-report.model';
-import { IStandardActivity } from '../models/standard-activity.model';
-import { IRootState } from '../store';
-import { Id } from '../utils/types';
-import { ActivityReportSheetState } from './activity-report-sheet.state';
-import { Cells, SheetCell, SheetRow } from './timesheet/common-types';
+import { createSelector } from "@reduxjs/toolkit";
+import { extractActivityReportStatus } from "@shared/activity-report.utils";
+import { SheetStatus } from "activity-report/sheet-status";
+import {
+  Cells,
+  SheetCell,
+  SheetRow,
+  SheetRows,
+} from "activity-report/timesheet/common-types";
+import { IActivityReport } from "models/activity-report.model";
+import { IStandardActivity } from "models/standard-activity.model";
+import { IRootState } from "store";
+import { Id } from "utils/types";
+import { ActivityReportSheetState } from "../activity-report-sheet.state";
+import { uniq } from "lodash";
 
 const selectRoot = (state: IRootState) => state.activityReport;
 
@@ -23,25 +31,50 @@ export const isSheetEditableSelector = createSelector(
   (state: ActivityReportSheetState) => state.editable
 );
 
+export const sheetGlobalStatusSelector = createSelector(
+  [sheetDataSelector],
+  (entities: SheetRows<IActivityReport, IStandardActivity>) => {
+    const sheetStatus: SheetStatus[] = [];
+
+    Object.keys(entities).forEach((activityReportId) => {
+      const activityReport = entities[activityReportId].meta;
+      sheetStatus.push(extractActivityReportStatus(activityReport));
+    });
+
+    return uniq(sheetStatus);
+  }
+);
+
 export const activityReportSelector = createSelector(
-  sheetDataSelector,
-  (_, activityReportId) => activityReportId,
+  [sheetDataSelector, (_, activityReportId) => activityReportId],
   (entities, activityReportId) => entities[activityReportId]
 );
 
 const activitiesSelector = createSelector(
-  sheetDataSelector,
-  activityReportSelector,
-  (_, row) => row && row.entities
+  [activityReportSelector],
+  (row) => row && row.entities
 );
 
 export const activitySelector =
   (activityReportId: Id, day: string) => (state: IRootState) =>
     createSelector(
-      sheetDataSelector,
-      activityReportSelector,
-      (_, __, day) => day,
-      (_, row, day) => row && row.entities && row.entities[day]
+      [activitiesSelector],
+      (activities) => activities && activities[day]
+    )(state, activityReportId, day);
+
+export const hasActivitySelector =
+  (activityReportId: Id, day: string) => (state: IRootState) =>
+    createSelector([activitySelector(activityReportId, day)], (cell) => !!cell)(
+      state,
+      activityReportId,
+      day
+    );
+
+export const activityStatusSelector =
+  (activityReportId: Id, day: string) => (state: IRootState) =>
+    createSelector(
+      [activitySelector(activityReportId, day)],
+      (c) => c && c.status
     )(state, activityReportId, day);
 
 export const activityReportTotalSelector =
@@ -49,7 +82,7 @@ export const activityReportTotalSelector =
     createSelector(
       sheetDataSelector,
       activitiesSelector,
-      (_, entities: Record<string, SheetCell<IStandardActivity>>) => {
+      (_, entities: Cells) => {
         return Object.keys(entities).reduce((acc, key) => {
           const cell: SheetCell<IStandardActivity> = entities[key];
           let sum = 0;
@@ -70,11 +103,7 @@ export const dayTotalSelector = (day: string) => (state: IRootState) =>
     activityReportIdsSelector,
     sheetDataSelector,
     (_, day) => day,
-    (
-      ids,
-      entities: Record<string, SheetRow<IActivityReport, IStandardActivity>>,
-      day
-    ) => {
+    (ids, entities: SheetRows<IActivityReport, IStandardActivity>, day) => {
       return ids.reduce((total, id) => {
         const cell: SheetCell<IStandardActivity> = entities[id].entities[day];
         let sum = 0;
@@ -93,9 +122,7 @@ export const dayTotalSelector = (day: string) => (state: IRootState) =>
 export const sheetTotalSelector = (state: IRootState) =>
   createSelector(
     sheetDataSelector,
-    (
-      entities: Record<string, SheetRow<IActivityReport, IStandardActivity>>
-    ) => {
+    (entities: SheetRows<IActivityReport, IStandardActivity>) => {
       return Object.keys(entities).reduce((total, activityReportId) => {
         const cells: Cells<IStandardActivity> =
           entities[activityReportId].entities;

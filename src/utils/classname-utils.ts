@@ -1,2 +1,2 @@
-export const hasClass = (ev: any, className) =>
-  ev.target.className && ev.target.className.includes(className);
+export const hasClass = (ev: any, className: string) =>
+  ev.target.className.includes(className);

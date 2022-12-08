@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
-import { useSelector } from 'react-redux';
-import { sheetTotalSelector } from '../../activity-report-sheet.selectors';
+import React, { FC } from "react";
+import { useSelector } from "react-redux";
+import { sheetTotalSelector } from "../../store/selectors/activity-report-sheet.selectors";
 
 interface Props {}
 

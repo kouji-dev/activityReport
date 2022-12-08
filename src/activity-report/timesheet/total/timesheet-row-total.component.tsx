@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
-import { useSelector } from 'react-redux';
-import { Id } from '../../../utils/types';
-import { activityReportTotalSelector } from '../../activity-report-sheet.selectors';
+import React, { FC } from "react";
+import { useSelector } from "react-redux";
+import { Id } from "../../../utils/types";
+import { activityReportTotalSelector } from "../../store/selectors/activity-report-sheet.selectors";
 
 interface Props {
   activityReportId: Id;

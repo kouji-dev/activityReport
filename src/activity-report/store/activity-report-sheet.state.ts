@@ -1,8 +1,8 @@
-import { SheetData, SheetMode } from './timesheet/common-types';
-import { IStandardActivity } from '../models/standard-activity.model';
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getFakeActivityReports } from '../fakeData/fake-data';
-import { IActivityReport } from '../models/activity-report.model';
+import { SheetData, SheetMode } from ".././timesheet/common-types";
+import { IStandardActivity } from "../../models/standard-activity.model";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { getFakeActivityReports } from "../../fakeData/fake-data";
+import { IActivityReport } from "../../models/activity-report.model";
 
 const namespace = `activity-report`;
 

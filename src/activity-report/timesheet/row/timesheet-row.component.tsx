@@ -1,13 +1,14 @@
-import React, { FC, memo } from 'react';
-import { useSelector } from 'react-redux';
-import { projectByActivityReportIdSelector } from '../../../project/project.selectors';
-import { useSheetColumns } from '../../../utils/date-utils';
-import { Id } from '../../../utils/types';
-import { TimesheetCell } from './timesheet-cell.component';
-import { TimesheetRowTotal } from '../total/timesheet-row-total.component';
+import React, { FC, memo } from "react";
+import { useSelector } from "react-redux";
+import { projectByActivityReportIdSelector } from "../../../project/project.selectors";
+import { useSheetColumns } from "../../../utils/date-utils";
+import { Id } from "../../../utils/types";
+import { TimesheetCell } from "./timesheet-cell.component";
+import { TimesheetRowTotal } from "../total/timesheet-row-total.component";
+import { TimesheetCellToolbox } from "./timesheet-cell-toolbox.component";
 
 interface Props {
-  activityReportId?: Id;
+  activityReportId: Id;
 }
 
 export const TimesheetRow: FC<Props> = (props) => {
@@ -16,6 +17,7 @@ export const TimesheetRow: FC<Props> = (props) => {
   return (
     <tr>
       <ProjectTD activityReportId={activityReportId} />
+      <TimesheetCellToolbox activityReportId={activityReportId} />
       {columns.map((col) => (
         <TimesheetCell
           key={`${col.day}-${activityReportId}`}
