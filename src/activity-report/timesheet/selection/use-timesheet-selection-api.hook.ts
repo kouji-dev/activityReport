@@ -5,9 +5,11 @@ import { RowCellIdentifiers } from "../common-types";
 
 export type TimesheetSelectionApi = {
   startDrag: () => void;
+  onSelecting: (ctrl: boolean) => void;
   onMove: () => void;
   onRangeMove: () => void;
   endDrag: () => void;
+  isHolidingCtrl: (ctrl: boolean) => void;
 };
 
 export const useTimesheetSelectionApi: (
@@ -18,6 +20,15 @@ export const useTimesheetSelectionApi: (
   const startDrag = useCallback(() => {
     dispatch(ActivityReportSelectionActions.startDrag(payload));
   }, []);
+
+  const onSelecting = useCallback(
+    (ctrl: boolean) => {
+      dispatch(
+        ActivityReportSelectionActions.onSelecting({ ...payload, ctrl })
+      );
+    },
+    [payload.rowKey, payload.key]
+  );
 
   const onMove = useCallback(() => {
     dispatch(ActivityReportSelectionActions.onMove(payload));
@@ -31,12 +42,18 @@ export const useTimesheetSelectionApi: (
     dispatch(ActivityReportSelectionActions.endDrag(payload));
   }, []);
 
+  const isHolidingCtrl = useCallback((ctrl: boolean) => {
+    dispatch(ActivityReportSelectionActions.isHolidingCtrl(ctrl));
+  }, []);
+
   const api: TimesheetSelectionApi = useMemo(
     () => ({
       startDrag,
       onMove,
       onRangeMove,
+      onSelecting,
       endDrag,
+      isHolidingCtrl,
     }),
     []
   );

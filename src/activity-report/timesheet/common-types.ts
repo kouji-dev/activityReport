@@ -1,4 +1,4 @@
-import { Id } from "../../utils/types";
+import { Id } from "utils/types";
 import { HeadCols } from "./head/timesheet-head.component";
 
 export type HalfDay = {
@@ -73,3 +73,13 @@ export type RowKey = Id;
 export type RowCellIdentifiers = {
   rowKey: RowKey;
 } & CellIdentifier;
+
+export type SelectionPayload = {
+  ctrl?: boolean;
+} & RowCellIdentifiers;
+
+export type RangeItem = {
+  date: string;
+};
+
+export type Range = [] | [RangeItem, RangeItem];

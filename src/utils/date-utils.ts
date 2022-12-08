@@ -1,8 +1,8 @@
-import moment, { Moment } from 'moment';
-import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { HeadCols } from '../activity-report/head/timesheet/timesheet-head.component';
-import { holidaysSelectors } from '../holidays/holidays.selectors';
+import { HeadCols } from "activity-report/timesheet/head/timesheet-head.component";
+import moment, { Moment } from "moment";
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
+import { holidaysSelectors } from "../holidays/holidays.selectors";
 
 export type Month = moment.Moment;
 
@@ -17,11 +17,11 @@ export const isHoliday = (date: Moment) => {
 };
 
 export const toServerFormat = (date: Moment) => {
-  return date.format('DD-MM-YYYY');
+  return date.format("DD-MM-YYYY");
 };
 
 export const fromServerFormat = (date: string) => {
-  return moment(date, 'DD-MM-YYYY');
+  return moment(date, "DD-MM-YYYY");
 };
 const baseDate = moment();
 export const getRandomDate = (month, year) => {
@@ -42,8 +42,8 @@ export const useSheetColumns = () => {
 
   const columns: HeadCols = useMemo(() => {
     const holidaysSet = new Set(holidays);
-    const startOfMonth = date.clone().startOf('month');
-    const endOfMonth = date.clone().endOf('month');
+    const startOfMonth = date.clone().startOf("month");
+    const endOfMonth = date.clone().endOf("month");
 
     const cols: HeadCols = [];
     while (startOfMonth.isSameOrBefore(endOfMonth)) {
@@ -54,7 +54,7 @@ export const useSheetColumns = () => {
         isHoliday: holidaysSet.has(startOfMonth.date()),
         isDisabled: false,
       });
-      startOfMonth.add(1, 'd');
+      startOfMonth.add(1, "d");
     }
     return cols;
   }, [month, year, holidays]);

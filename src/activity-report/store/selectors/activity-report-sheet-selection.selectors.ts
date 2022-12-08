@@ -6,6 +6,11 @@ import { ActivityReportSheetSelectionState } from "../activity-report-sheet-sele
 
 const selectRoot = (state: IRootState) => state.activityReportSelection;
 
+const isHoldingSelector = createSelector(
+  selectRoot,
+  (state: ActivityReportSheetSelectionState) => state.ctrl
+);
+
 const selectionSelector = createSelector(
   selectRoot,
   (state: ActivityReportSheetSelectionState) => state.selection
@@ -29,9 +34,6 @@ const draggingSelector = createSelector(
 export const isDraggingSelector =
   (activityReportId: Id) => (state: IRootState) =>
     createSelector(
-      [
-        draggingSelector,
-        (_, activityReportId: Id) => activityReportId,
-      ],
+      [draggingSelector, (_, activityReportId: Id) => activityReportId],
       (dragging: Set<string>, key: string) => dragging.has(key)
     )(state, activityReportId);
