@@ -10,7 +10,9 @@ import { generateRangeKeys } from "utils/sheet-utils";
 const namespace = `activity-report-selection`;
 
 export interface ActivityReportSheetSelectionState {
+  //key by activityReportId
   dragging: Set<RowKey>;
+  //key by getKey
   selection: Set<string>;
   range: Range;
   ctrl?: boolean;
@@ -31,7 +33,7 @@ export const activityReportSelectionState = createSlice({
       dragging.add(payload.rowKey);
       selection.add(payload.key);
       if (ctrl) {
-        range[0] = { date: payload.day };
+        range[0] = payload.day;
       }
     },
     onSelecting: (state, action: PayloadAction<SelectionPayload>) => {
@@ -47,7 +49,7 @@ export const activityReportSelectionState = createSlice({
         const isRowDragging = dragging.has(payload.rowKey);
         if (isRowDragging) {
           // selection.add(payload.key);
-          range[1] = { date: payload.day };
+          range[1] = payload.day;
         }
       } else {
         const isDragging = dragging.size;
@@ -80,19 +82,20 @@ export const activityReportSelectionState = createSlice({
 
       if (isRowDragging && ctrl) {
         // selection.add(payload.key);
-        range[1] = { date: payload.day };
+        range[1] = payload.day;
         // select items from range{0} to range{1}
         const rangeKeys = generateRangeKeys(
           payload.activityReportId,
           current(range)
         );
+
+        console.log({ rangeKeys });
         for (const key of rangeKeys) {
           selection.add(key);
         }
       } else {
         selection.add(payload.key);
       }
-      console.log(current(range), current(selection));
       state.range = [];
       dragging.clear();
     },

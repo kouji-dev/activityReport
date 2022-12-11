@@ -17,12 +17,13 @@ export const isHoliday = (date: Moment) => {
 };
 
 export const toServerFormat = (date: Moment) => {
-  return date.format("DD-MM-YYYY");
+  return date.format();
 };
 
 export const fromServerFormat = (date: string) => {
-  return moment(date, "DD-MM-YYYY");
+  return moment(date);
 };
+
 const baseDate = moment();
 export const getRandomDate = (month, year) => {
   const date = baseDate;

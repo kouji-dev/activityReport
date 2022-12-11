@@ -78,8 +78,6 @@ export type SelectionPayload = {
   ctrl?: boolean;
 } & RowCellIdentifiers;
 
-export type RangeItem = {
-  date: string;
-};
+export type RangeItem = string;
 
 export type Range = [] | [RangeItem, RangeItem];
