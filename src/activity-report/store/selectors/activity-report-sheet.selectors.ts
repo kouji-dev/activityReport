@@ -4,7 +4,6 @@ import { SheetStatus } from "activity-report/sheet-status";
 import {
   Cells,
   SheetCell,
-  SheetRow,
   SheetRows,
 } from "activity-report/timesheet/common-types";
 import { IActivityReport } from "models/activity-report.model";

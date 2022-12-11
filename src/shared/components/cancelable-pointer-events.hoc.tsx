@@ -25,41 +25,39 @@ export const WithCancalablePointer =
       () => ({
         key: getKey(activityReportId, day),
         rowKey: activityReportId,
+        day,
+        activityReportId,
       }),
       []
     );
-    const { startDrag, onMove, onRangeMove, endDrag } =
+    const { startDrag, onSelecting, endDrag, isHolidingCtrl } =
       useTimesheetSelectionApi(payload);
-    const isCtrlActive = useRef(false);
 
     const rootCls = "cell";
 
+    const handleCtrl = (ev: any) => {
+      isHolidingCtrl(ev.ctrlKey);
+    };
+
     const onPointerDown: PointerEventHandler<HTMLDivElement> = (ev) => {
+      handleCtrl(ev);
       if (hasClass(ev, rootCls)) {
         console.log("down");
-        isCtrlActive.current = ev.ctrlKey;
         startDrag();
       }
     };
 
     const onPointerMove: PointerEventHandler<HTMLDivElement> = (ev) => {
       if (!hasClass(ev, rootCls)) return;
-      console.log({
-        ctrl: isCtrlActive.current,
-        activityReportId,
-      });
-      if (isCtrlActive.current) {
-        onRangeMove();
-      } else {
-        onMove();
-      }
+      onSelecting(ev.ctrlKey);
     };
 
-    const resetCtrl = () => (isCtrlActive.current = false);
+    const resetCtrl = () => isHolidingCtrl(false);
     const onCancel = (ev) => {
       if (hasClass(ev, rootCls)) {
-        resetCtrl();
+        console.log("cancel");
         endDrag();
+        resetCtrl();
       }
     };
 
@@ -68,14 +66,12 @@ export const WithCancalablePointer =
       onCancel(ev);
     };
     const onPointerCancel: PointerEventHandler<HTMLDivElement> = (ev) => {
-      console.log("cancel");
       onCancel(ev);
     };
 
     const onPointerCancelCapture: PointerEventHandler<HTMLDivElement> = (
       ev
     ) => {
-      console.log("cancel");
       onCancel(ev);
     };
 
