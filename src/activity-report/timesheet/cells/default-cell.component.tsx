@@ -1,13 +1,10 @@
 import { FC, memo } from "react";
 import cls from "classnames";
-import {
-  CancelablePointerProps,
-  WithCancalablePointer,
-} from "@shared/components/cancelable-pointer-events.hoc";
 import { TimesheetCellSelectionLayer } from "../selection/timesheet-cell-selection-layer.component";
 import { useSelector } from "react-redux";
 import { hasActivitySelector } from "activity-report/store/selectors/activity-report-sheet.selectors";
 import { EmptyCell } from "./empty-cell.component";
+import { CancelablePointerProps, WithCancalablePointer } from "activity-report/shared/components/cancelable-pointer-events.hoc";
 
 const CellPointerListener = WithCancalablePointer(
   ({ activityReportId, day }: CancelablePointerProps) => (

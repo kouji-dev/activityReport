@@ -1,6 +1,6 @@
+import { useTimesheetSelectionApi } from "activity-report/hooks/use-timesheet-selection-api.hook";
 import { RowCellIdentifiers } from "activity-report/timesheet/common-types";
-import { useTimesheetSelectionApi } from "activity-report/timesheet/selection/use-timesheet-selection-api.hook";
-import { PointerEventHandler, useMemo, useRef } from "react";
+import { PointerEventHandler, useMemo } from "react";
 import { hasClass } from "utils/classname-utils";
 import { getKey } from "utils/sheet-utils";
 import { Id } from "utils/types";

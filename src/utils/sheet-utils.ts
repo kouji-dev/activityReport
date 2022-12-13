@@ -1,4 +1,5 @@
 import { Range } from "activity-report/timesheet/common-types";
+import moment from "moment";
 import { fromServerFormat, toServerFormat } from "./date-utils";
 import { Id } from "./types";
 
@@ -9,7 +10,9 @@ export const generateRangeKeys = (activityReportId: Id, range: Range) => {
   if (!(range && range.length)) return [];
   const keys = [];
 
-  const [startDateString, endDateString] = range;
+  const sortedRange = [...range].sort((a, b) => moment(a).diff(b));
+
+  const [startDateString, endDateString] = sortedRange;
 
   const startDate = fromServerFormat(startDateString);
 

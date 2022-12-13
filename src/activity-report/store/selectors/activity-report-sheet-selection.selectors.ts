@@ -1,4 +1,4 @@
-import { Range } from "activity-report/timesheet/common-types";
+import { Range, RangeDirection } from "activity-report/timesheet/common-types";
 import moment from "moment";
 import { getKey } from "utils/sheet-utils";
 import { createSelector } from "utils/store-utils";
@@ -28,9 +28,9 @@ const rangeSelector = createSelector(
   (state: ActivityReportSheetSelectionState) => state.range
 );
 
-const firstRangeItemSelector = createSelector(
+const rangeDirectionSelector = createSelector(
   selectRoot,
-  (state: ActivityReportSheetSelectionState) => state.range[0]
+  (state: ActivityReportSheetSelectionState) => state.rangeDirection
 );
 
 export const isDraggingRowSelector =
@@ -57,25 +57,26 @@ export const isCellSelectedSelector =
       ) => (isRowDragging && ctrl ? inRange : selected)
     )(state, activityReportId, day);
 
-export const isFirstRangeItemCellSelector =
-  (activityReportId: Id, day: string) => (state: IRootState) =>
-    createSelector(
-      [firstRangeItemSelector, (_, __, day: string) => day],
-      (rangeDate, day: string) => (rangeDate ? rangeDate == day : false)
-    )(state, activityReportId, day);
-
 export const isCellInRangeSelector =
   (activityReportId: Id, day: string) => (state: IRootState) =>
     createSelector(
       [
         rangeSelector,
+        rangeDirectionSelector,
         isDraggingRowSelector(activityReportId),
         (_, __, day: string) => day,
       ],
-      ([a, b]: Range, isDraggingRow: boolean, day: string) =>
-        isDraggingRow
-          ? a && b && moment(day).isBetween(a, b, "date", "(]")
-          : false
+      (
+        [a, b]: Range,
+        rangeDirection: RangeDirection,
+        isDraggingRow: boolean,
+        day: string
+      ) => {
+        const dates = rangeDirection == "increasing" ? [a, b] : [b, a];
+        return isDraggingRow
+          ? a && b && moment(day).isBetween(...dates, "date", "[]")
+          : false;
+      }
     )(state, activityReportId, day);
 
 export const isCellInSelectionSelector =

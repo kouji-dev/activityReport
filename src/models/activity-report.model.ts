@@ -8,6 +8,7 @@ export interface IActivityReport {
   submitted?: boolean;
   submissionDate?: string;
   editable?: boolean;
+  locked?: boolean;
   comment?: string;
   projectResourceId?: number;
 }

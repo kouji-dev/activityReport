@@ -3,7 +3,7 @@ import cls from "classnames";
 import {
   CancelablePointerProps,
   WithCancalablePointer,
-} from "@shared/components/cancelable-pointer-events.hoc";
+} from "activity-report/shared/components/cancelable-pointer-events.hoc";
 
 const CellPointerListener = WithCancalablePointer(() => <span>D</span>);
 

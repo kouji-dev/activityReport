@@ -4,13 +4,13 @@ import { useSelector } from "react-redux";
 import { Badge } from "antd";
 import { activityStatusSelector } from "activity-report/store/selectors/activity-report-sheet.selectors";
 import { SheetCellStatus } from "activity-report/timesheet/common-types";
-import { COLORS } from "@shared/colors";
+
 import {
-  isCellInRangeSelector,
   isCellInSelectionSelector,
   isCellSelectedSelector,
 } from "activity-report/store/selectors/activity-report-sheet-selection.selectors";
 import { Id } from "utils/types";
+import { COLORS } from "activity-report/shared/colors";
 
 interface Props {
   activityReportId: Id;

@@ -4,7 +4,9 @@ import {
   RowCellIdentifiers,
   RowKey,
   Range,
+  RangeDirection,
 } from "activity-report/timesheet/common-types";
+import moment from "moment";
 import { generateRangeKeys } from "utils/sheet-utils";
 
 const namespace = `activity-report-selection`;
@@ -15,12 +17,14 @@ export interface ActivityReportSheetSelectionState {
   //key by getKey
   selection: Set<string>;
   range: Range;
+  rangeDirection: RangeDirection;
   ctrl?: boolean;
 }
 export const initialState: ActivityReportSheetSelectionState = {
   selection: new Set<string>(),
   dragging: new Set<RowKey>(),
   range: [],
+  rangeDirection: 'increasing'
 };
 
 export const activityReportSelectionState = createSlice({
@@ -49,7 +53,14 @@ export const activityReportSelectionState = createSlice({
         const isRowDragging = dragging.has(payload.rowKey);
         if (isRowDragging) {
           // selection.add(payload.key);
+          if(!range[1]) state.rangeDirection = moment(range[0]).isBefore(payload.day) ? 'increasing' : 'decreasing';
           range[1] = payload.day;
+          // if (!range[1]) {
+          //   range[1] = payload.day;
+          //   state.range = range.sort((a, b) => moment(a).diff(b, "days"));
+
+          // }
+          console.log(current(state.range));
         }
       } else {
         const isDragging = dragging.size;
@@ -57,22 +68,6 @@ export const activityReportSelectionState = createSlice({
           selection.add(payload.key);
         }
       }
-    },
-    onMove: (state, action: PayloadAction<RowCellIdentifiers>) => {
-      // const payload: RowCellIdentifiers = action.payload;
-      // const keyNotFound = !state.selection.has(payload.key);
-      // if (state.dragging.size && keyNotFound) {
-      //   state.selection.add(payload.key);
-      // }
-    },
-    onRangeMove: (state, action: PayloadAction<RowCellIdentifiers>) => {
-      // const payload: RowCellIdentifiers = action.payload;
-      // const { ctrl, dragging, selection } = state;
-      // const keyNotFound = !selection.has(payload.key);
-      // console.log({ d: current(dragging) });
-      // if (dragging.has(payload.rowKey) && ctrl && keyNotFound) {
-      //   state.selection.add(payload.key);
-      // }
     },
     endDrag: (state, action: PayloadAction<RowCellIdentifiers>) => {
       const payload: RowCellIdentifiers = action.payload;
@@ -97,6 +92,7 @@ export const activityReportSelectionState = createSlice({
         selection.add(payload.key);
       }
       state.range = [];
+      state.rangeDirection = 'increasing';
       dragging.clear();
     },
     isHolidingCtrl: (state, action: PayloadAction<boolean>) => {
