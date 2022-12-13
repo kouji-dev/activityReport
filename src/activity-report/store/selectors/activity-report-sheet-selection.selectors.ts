@@ -13,7 +13,7 @@ const isHoldingCtrlSelector = createSelector(
   (state: ActivityReportSheetSelectionState) => state.ctrl
 );
 
-const selectionSelector = createSelector(
+export const selectionSelector = createSelector(
   selectRoot,
   (state: ActivityReportSheetSelectionState) => state.selection
 );

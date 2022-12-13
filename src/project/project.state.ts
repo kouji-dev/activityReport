@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "utils/store-utils";
 import { ActivityReportActions } from "../activity-report/store/activity-report-sheet.state";
 import { getFakeProjects } from "../fakeData/fake-data";
 import { IProject } from "../models/project.model";

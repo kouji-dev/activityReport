@@ -14,6 +14,7 @@ import { Id } from "utils/types";
 import { ActivityReportSheetState } from "../activity-report-sheet.state";
 import { uniq } from "lodash";
 import { extractActivityReportStatus } from "activity-report/shared/activity-report.utils";
+import { selectionSelector } from "./activity-report-sheet-selection.selectors";
 
 const selectRoot = (state: IRootState) => state.activityReport;
 
@@ -36,6 +37,10 @@ export const sheetModeSelector = createSelector(
 export const isSheetModeEditSelector = createSelector(
   selectRoot,
   (state: ActivityReportSheetState) => state.mode == SheetMode.EDITTING
+);
+export const isSheetLoading = createSelector(
+  selectRoot,
+  (state: ActivityReportSheetState) => state.loading
 );
 export const sheetGlobalStatusSelector = createSelector(
   [sheetDataSelector],
@@ -148,9 +153,14 @@ export const sheetTotalSelector = createSelector(
 );
 
 export const canSubmitSelector = createSelector(
-  [sheetDataSelector, isSheetModeEditSelector],
-  (entities: SheetRowsRecords, isSheetEditting: boolean) =>
+  [sheetDataSelector, isSheetModeEditSelector, selectionSelector],
+  (
+    entities: SheetRowsRecords,
+    isSheetEditting: boolean,
+    selection: Set<string>
+  ) =>
     isSheetEditting &&
+    selection.size &&
     Object.keys(entities).some(
       (activityReportId) => !entities[activityReportId]?.meta?.submitted
     )

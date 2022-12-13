@@ -6,6 +6,13 @@ import { Id } from "./types";
 export const getKey = (activityReportId: Id, day: string) =>
   `${activityReportId}||${day}`;
 
+export const fromKey: (key: string) => { activityReportId: Id; day: string } = (
+  key: string
+) => {
+  const [activityReportId, day] = key.split("||");
+  return { activityReportId, day };
+};
+
 export const generateRangeKeys = (activityReportId: Id, range: Range) => {
   if (!(range && range.length)) return [];
   const keys = [];

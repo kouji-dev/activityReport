@@ -9,7 +9,7 @@ import {
 import moment from "moment";
 import { generateRangeKeys } from "utils/sheet-utils";
 
-const namespace = `activity-report-selection`;
+export const namespace = `activity-report-selection`;
 
 export interface ActivityReportSheetSelectionState {
   //key by activityReportId
