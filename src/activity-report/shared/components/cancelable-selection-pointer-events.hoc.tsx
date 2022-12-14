@@ -9,6 +9,7 @@ import {CancalablePointer, CancelablePointerProps} from './cancelable-pointer-ev
 export interface CancelableSelectionPointerProps {
     activityReportId: Id;
     day: string;
+    className?: string;
 }
 
 export const WithCancalableSelectionPointer =
@@ -76,7 +77,7 @@ export const WithCancalableSelectionPointer =
         onPointerCancel={onPointerCancel}
         onPointerUp={onPointerUp}
         className={className}
-      >
+        >
         <Component {...props} />
       </CancalablePointer>
     );
