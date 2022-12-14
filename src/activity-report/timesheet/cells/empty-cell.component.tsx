@@ -1,10 +1,13 @@
 import { FC, memo } from "react";
 import cls from "classnames";
-import { TimesheetCellSelectionLayer } from "../selection/timesheet-cell-selection-layer.component";
-import { CancelablePointerProps, WithCancalablePointer } from "activity-report/shared/components/cancelable-pointer-events.hoc";
+import {
+  CancelableSelectionPointerProps,
+  WithCancalableSelectionPointer,
+} from "activity-report/shared/components/cancelable-selection-pointer-events.hoc";
+import { TimesheetCellSelectionLayer } from "./layers/timesheet-cell-selection-layer.component";
 
-const CellPointerListener = WithCancalablePointer(
-  ({ activityReportId, day }: CancelablePointerProps) => (
+const CellPointerListener = WithCancalableSelectionPointer(
+  ({ activityReportId, day }: CancelableSelectionPointerProps) => (
     <TimesheetCellSelectionLayer
       activityReportId={activityReportId}
       day={day}
@@ -12,7 +15,7 @@ const CellPointerListener = WithCancalablePointer(
   )
 );
 
-interface Props extends CancelablePointerProps {}
+interface Props extends CancelableSelectionPointerProps {}
 
 export const EmptyCell: FC<Props> = memo((props) => {
   const className = cls("cell", "cell-empty");

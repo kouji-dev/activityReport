@@ -4,16 +4,16 @@ import { FC, PointerEventHandler, useMemo } from "react";
 import { hasClass } from "utils/classname-utils";
 import { getKey } from "utils/sheet-utils";
 import { Id } from "utils/types";
-import {CancalablePointer, CancelablePointerProps} from './cancelable-pointer-events.hoc'
+import { CancalablePointer } from "./cancelable-pointer-events.hoc";
 
 export interface CancelableSelectionPointerProps {
-    activityReportId: Id;
-    day: string;
-    className?: string;
+  activityReportId: Id;
+  day: string;
+  className?: string;
 }
 
 export const WithCancalableSelectionPointer =
-  <T extends CancelableSelectionPointerProps, P extends CancelablePointerProps>(Component: FC<T>) =>
+  <T extends CancelableSelectionPointerProps>(Component: FC<T>) =>
   (props: T) => {
     const { activityReportId, day, className } = props;
 
@@ -70,14 +70,14 @@ export const WithCancalableSelectionPointer =
     };
 
     return (
-      <CancalablePointer>
+      <CancalablePointer
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerCancelCapture={onPointerCancelCapture}
         onPointerCancel={onPointerCancel}
         onPointerUp={onPointerUp}
         className={className}
-        >
+      >
         <Component {...props} />
       </CancalablePointer>
     );
