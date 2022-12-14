@@ -1,4 +1,9 @@
-import { SheetData, SheetMode } from ".././timesheet/common-types";
+import {
+  SheetCellStatus,
+  SheetData,
+  SheetMode,
+  getDefaultHalfDay,
+} from ".././timesheet/common-types";
 import { IStandardActivity } from "../../models/standard-activity.model";
 import {
   createSlice,
@@ -36,6 +41,12 @@ export const activityReportState = createSlice({
     stopLoading: (state: ActivityReportSheetState) => {
       state.loading = false;
     },
+    updateMode: (
+      state: ActivityReportSheetState,
+      action: PayloadAction<SheetMode>
+    ) => {
+      state.mode = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -46,6 +57,29 @@ export const activityReportState = createSlice({
           action: PayloadAction<ActivityReportSheetState>
         ) => {
           return action.payload;
+        }
+      )
+      .addCase(
+        submitReportsThunk.fulfilled,
+        (
+          state: ActivityReportSheetState,
+          action: PayloadAction<{ [key: string]: string[] }>
+        ) => {
+          const payload = action.payload;
+          Object.keys(payload).forEach((activityReportId) => {
+            for (const day of payload[activityReportId]) {
+              const activityReport = state.entities[activityReportId];
+              if (!activityReport.entities[day]) {
+                activityReport.ids.push(day);
+                activityReport.entities[day] = {
+                  date: day,
+                  status: SheetCellStatus.PENDING,
+                  morning: getDefaultHalfDay(true),
+                  afternoon: getDefaultHalfDay(true),
+                };
+              }
+            }
+          });
         }
       )
       .addMatcher(

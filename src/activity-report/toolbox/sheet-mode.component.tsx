@@ -1,3 +1,4 @@
+import { useTimesheetMode } from "activity-report/hooks/use-timesheet-mode.hook";
 import { sheetModeSelector } from "activity-report/store/selectors/activity-report-sheet.selectors";
 import { modes, SheetMode as T } from "activity-report/timesheet/common-types";
 import { Select } from "antd";
@@ -11,7 +12,13 @@ const options = modes.map((m) => ({
 
 export const SheetMode = memo(() => {
   const selectedMode = useSelector(sheetModeSelector);
+  const { updateMode } = useTimesheetMode();
   return (
-    <Select dropdownMatchSelectWidth value={selectedMode} options={options} />
+    <Select
+      dropdownMatchSelectWidth
+      value={selectedMode}
+      onChange={updateMode}
+      options={options}
+    />
   );
 });
