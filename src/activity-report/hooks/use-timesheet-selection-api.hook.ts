@@ -1,6 +1,7 @@
 import { ActivityReportSelectionActions } from "activity-report/store/activity-report-sheet-selection.state";
 import { RowCellIdentifiers } from "activity-report/timesheet/common-types";
 import { useCallback, useMemo } from "react";
+import { useSelector } from "react-redux";
 import { useDispatch } from "store";
 
 export type TimesheetSelectionApi = {
@@ -14,6 +15,7 @@ export const useTimesheetSelectionApi: (
   payload: RowCellIdentifiers
 ) => TimesheetSelectionApi = (payload: RowCellIdentifiers) => {
   const dispatch = useDispatch();
+  const mode = useSelector(sheetModeSelector)
 
   const startDrag = useCallback(() => {
     dispatch(ActivityReportSelectionActions.startDrag(payload));

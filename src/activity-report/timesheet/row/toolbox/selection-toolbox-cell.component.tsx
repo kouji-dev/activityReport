@@ -21,20 +21,14 @@ export const SelectionToolboxCell: FC<Props> = (props) => {
   }, []);
 
   return (
-    <Space size={0}>
-      <Button
-        onClick={onDeclareAll}
-        icon={<CheckOutlined />}
-        type="primary"
-        size="small"
-      />
+    <Space.Compact size="small">
+      <Button onClick={onDeclareAll} icon={<CheckOutlined />} type="primary" />
       <Button
         onClick={onUnDeclareAll}
         icon={<CloseOutlined />}
         type="primary"
         danger
-        size="small"
       />
-    </Space>
+    </Space.Compact>
   );
 };

@@ -22,6 +22,8 @@ import {
   undeclareAllThunk,
 } from "./thunks/activity-report-sheet.thunks";
 import { Id } from "utils/types";
+import { toServerFormat } from "utils/date-utils";
+import moment from "moment";
 
 export const namespace = `activity-report`;
 
@@ -71,8 +73,13 @@ export const activityReportState = createSlice({
         (state: ActivityReportSheetState, action: PayloadAction<Selection>) => {
           const keys = action.payload;
           Object.keys(keys).forEach((activityReportId) => {
+            const activityReport = state.entities[activityReportId];
+            if (!activityReport.meta.submitted) {
+              activityReport.meta.submitted = true;
+            }
+            activityReport.meta.submissionDate = toServerFormat(moment());
+
             for (const day of keys[activityReportId].values()) {
-              const activityReport = state.entities[activityReportId];
               if (!activityReport.entities[day]) {
                 activityReport.ids.push(day);
                 activityReport.entities[day] = {
@@ -92,6 +99,9 @@ export const activityReportState = createSlice({
           const activityReportId = action.payload;
           state.entities[activityReportId].ids = [];
           state.entities[activityReportId].entities = {};
+          const meta = state.entities[activityReportId].meta;
+          meta.submitted = undefined;
+          meta.submissionDate = undefined;
         }
       )
       .addMatcher(

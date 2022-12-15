@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { Badge } from "antd";
 import { activityStatusSelector } from "activity-report/store/selectors/activity-report-sheet.selectors";
 import { SheetCellStatus } from "activity-report/timesheet/common-types";
-
 import {
   isCellInSelectionSelector,
   isCellSelectedSelector,

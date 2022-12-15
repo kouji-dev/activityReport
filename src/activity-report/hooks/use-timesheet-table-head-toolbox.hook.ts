@@ -1,24 +1,25 @@
+import { ActivityReportSelectionActions } from "activity-report/store/activity-report-sheet-selection.state";
 import { useCallback, useMemo } from "react";
 import { useDispatch } from "store";
-import { Id } from "utils/types";
 
 type TimehseetTableHeadToolboxApi = {
   unselectAll: () => void;
 };
 
-export const useTimesheetToolboxCell: () => TimehseetTableHeadToolboxApi = () => {
-  const dispatch = useDispatch();
+export const useTimesheetTableHeadToolboxCell: () => TimehseetTableHeadToolboxApi =
+  () => {
+    const dispatch = useDispatch();
 
-  const unselectAll = useCallback(() => {
-    dispatch(ActivityReportSelectionActions);
-  }, []);
+    const unselectAll = useCallback(() => {
+      dispatch(ActivityReportSelectionActions.deselectAll());
+    }, []);
 
-  const api: TimehseetToolboxCellApi = useMemo(
-    () => ({
-      unselectAll
-    }),
-    []
-  );
+    const api: TimehseetTableHeadToolboxApi = useMemo(
+      () => ({
+        unselectAll,
+      }),
+      []
+    );
 
-  return api;
-};
+    return api;
+  };

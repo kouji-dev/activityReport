@@ -37,6 +37,9 @@ table {
       }
     }
     }
+    .context-cell {
+      padding: 2px 8px;
+    }
   }
   td {
     position: relative;
@@ -71,6 +74,9 @@ td .ant-badge {
 
 .cell-content {
   z-index: 1;
+  display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cell, .cell-selection-layer {
@@ -78,7 +84,6 @@ td .ant-badge {
     background-color: #00D7F0 !important; 
   }
 }
-
 
 .cell-in-range {
   background-color: #e1e1de !important
@@ -88,8 +93,8 @@ td .ant-badge {
   background-color: #f9fae1 !important;
 }
 
-.cell-dragging {
-  cursor: grab;
+.dragging {
+  cursor: grabbing !important;
 }
 
 .cell-approved {

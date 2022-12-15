@@ -3,24 +3,25 @@ import {
   CloseCircleTwoTone,
   SettingTwoTone,
 } from "@ant-design/icons";
-import { Button, Popover, Space, Tooltip } from "antd";
+import { useTimesheetTableHeadToolboxCell } from "activity-report/hooks/use-timesheet-table-head-toolbox.hook";
+import { Button, Popover, Space, Tooltip, Typography } from "antd";
 import { FC } from "react";
 import { HeadCol } from "./timesheet-head.component";
 
 interface Props extends HeadCol {}
 
 export const Th: FC<Props> = (props) => {
-  const { date } = props;
+  const { date, isHoliday, isWeekend } = props;
 
   const dd = date.format("dd");
   const DD = date.format("DD");
 
   return (
     <th colSpan={0}>
-      <div className="head">
+      <Typography.Text disabled={isHoliday || isWeekend} className="head">
         <small>{dd}</small>
         <b>{DD}</b>
-      </div>
+      </Typography.Text>
     </th>
   );
 };
@@ -36,14 +37,11 @@ export const ThProject: FC<{}> = () => {
 };
 
 export const TableHeadToolbox: FC<{}> = () => {
-  const {selectAll} = u
+  const { unselectAll } = useTimesheetTableHeadToolboxCell();
   const content = (
     <Space.Compact block>
-      <Tooltip title="Select All">
-        <Button icon={<CheckCircleTwoTone />} />
-      </Tooltip>
       <Tooltip title="Deselect All">
-        <Button icon={<CloseCircleTwoTone />} />
+        <Button onClick={unselectAll} icon={<CloseCircleTwoTone />} />
       </Tooltip>
     </Space.Compact>
   );

@@ -4,7 +4,10 @@ import {
   WithCancalableSelectionPointer,
 } from "activity-report/shared/components/cancelable-selection-pointer-events.hoc";
 import cls from "classnames";
-const CellPointerListener = WithCancalableSelectionPointer(() => <>W</>);
+import { Typography } from "antd";
+const CellPointerListener = WithCancalableSelectionPointer(() => (
+  <Typography.Text disabled>W</Typography.Text>
+));
 
 interface Props extends CancelableSelectionPointerProps {}
 

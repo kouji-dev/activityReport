@@ -8,7 +8,7 @@ interface Props {
   day: string;
 }
 
-export const CellContent: FC<Props> = memo((props) => {
+export const CellContentLayer: FC<Props> = memo((props) => {
   const { activityReportId, day } = props;
   const total = useSelector(cellTotalSelector(activityReportId, day));
   const rootCls = "cell-content";

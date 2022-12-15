@@ -8,12 +8,12 @@ import {
   CancelableSelectionPointerProps,
   WithCancalableSelectionPointer,
 } from "activity-report/shared/components/cancelable-selection-pointer-events.hoc";
-import { CellContent } from "./cell-content.component";
+import { CellContentLayer } from "./layers/cell-content-layer.component";
 
 const CellPointerListener = WithCancalableSelectionPointer(
   ({ activityReportId, day }: CancelableSelectionPointerProps) => (
     <>
-      <CellContent activityReportId={activityReportId} day={day} />
+      <CellContentLayer activityReportId={activityReportId} day={day} />
       <TimesheetCellSelectionLayer
         activityReportId={activityReportId}
         day={day}

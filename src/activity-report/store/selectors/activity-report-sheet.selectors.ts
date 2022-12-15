@@ -13,7 +13,7 @@ import { IRootState } from "store";
 import { Id } from "utils/types";
 import { ActivityReportSheetState } from "../activity-report-sheet.state";
 import { uniq } from "lodash";
-import { extractActivityReportStatus } from "activity-report/shared/activity-report.utils";
+import { extractSheetStatus } from "activity-report/shared/activity-report.utils";
 import { selectionSelector } from "./activity-report-sheet-selection.selectors";
 
 const selectRoot = (state: IRootState) => state.activityReport;
@@ -49,12 +49,16 @@ export const isSheetLoading = createSelector(
 export const sheetGlobalStatusSelector = createSelector(
   [sheetDataSelector],
   (entities: SheetRows<IActivityReport, IStandardActivity>) => {
-    const sheetStatus: SheetStatus[] = [];
+    const activities: SheetCell<IStandardActivity>[] = [];
+    const reports: IActivityReport[] = [];
 
     Object.keys(entities).forEach((activityReportId) => {
-      const activityReport = entities[activityReportId].meta;
-      sheetStatus.push(extractActivityReportStatus(activityReport));
+      const activityReport = entities[activityReportId];
+      activities.push(...Object.values(activityReport.entities));
+      reports.push(activityReport.meta);
     });
+
+    const sheetStatus: SheetStatus[] = extractSheetStatus(reports, activities);
 
     return uniq(sheetStatus);
   }
@@ -81,6 +85,14 @@ export const hasActivitySelector =
       activityReportId,
       day
     );
+
+export const canSelect =
+  (activityReportId: Id, day: string) => (state: IRootState) =>
+    createSelector(
+      [hasActivitySelector(activityReportId, day), sheetModeSelector],
+      (hasCell: boolean, sheetMode: SheetMode) =>
+        (sheetMode === SheetMode.EDITTING) || hasCell
+    )(state, activityReportId, day);
 
 export const activityStatusSelector =
   (activityReportId: Id, day: string) => (state: IRootState) =>
