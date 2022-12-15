@@ -1,13 +1,16 @@
 import { ActivityReportSelectionActions } from "activity-report/store/activity-report-sheet-selection.state";
-import { useCallback, useMemo } from "react";
+import { sheetModeSelector } from "activity-report/store/selectors/activity-report-sheet.selectors";
+import {
+  RowCellIdentifiers,
+  SheetMode,
+} from "activity-report/timesheet/common-types";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useSelector } from "react-redux";
 import { useDispatch } from "store";
-import { RowCellIdentifiers } from "../common-types";
 
 export type TimesheetSelectionApi = {
   startDrag: () => void;
   onSelecting: (ctrl: boolean) => void;
-  onMove: () => void;
-  onRangeMove: () => void;
   endDrag: () => void;
   isHolidingCtrl: (ctrl: boolean) => void;
 };
@@ -16,8 +19,15 @@ export const useTimesheetSelectionApi: (
   payload: RowCellIdentifiers
 ) => TimesheetSelectionApi = (payload: RowCellIdentifiers) => {
   const dispatch = useDispatch();
+  const sheetMode = useSelector(sheetModeSelector);
+  const sheetModeRef = useRef<SheetMode>(sheetMode);
+
+  useEffect(() => {
+    sheetModeRef.current = sheetMode;
+  }, [sheetMode]);
 
   const startDrag = useCallback(() => {
+    console.log(sheetModeRef.current);
     dispatch(ActivityReportSelectionActions.startDrag(payload));
   }, []);
 
@@ -27,16 +37,8 @@ export const useTimesheetSelectionApi: (
         ActivityReportSelectionActions.onSelecting({ ...payload, ctrl })
       );
     },
-    [payload.rowKey, payload.key]
+    [payload.rowKey, payload.activityReportId, payload.day]
   );
-
-  const onMove = useCallback(() => {
-    dispatch(ActivityReportSelectionActions.onMove(payload));
-  }, [payload.rowKey, payload.key]);
-
-  const onRangeMove = useCallback(() => {
-    dispatch(ActivityReportSelectionActions.onRangeMove(payload));
-  }, [payload.rowKey, payload.key]);
 
   const endDrag = useCallback(() => {
     dispatch(ActivityReportSelectionActions.endDrag(payload));
@@ -49,8 +51,6 @@ export const useTimesheetSelectionApi: (
   const api: TimesheetSelectionApi = useMemo(
     () => ({
       startDrag,
-      onMove,
-      onRangeMove,
       onSelecting,
       endDrag,
       isHolidingCtrl,

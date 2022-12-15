@@ -3,20 +3,23 @@ import {
   fakeActivityReport,
   IActivityReport,
 } from "../models/activity-report.model";
-import {
-  fakeStandardActivity,
-  IStandardActivity,
-} from "../models/standard-activity.model";
-import { ActivityReportSheetState } from "../activity-report/activity-report-sheet.state";
+import { IStandardActivity } from "../models/standard-activity.model";
 import {
   getDefaultHalfDay,
   SheetMode,
   SheetRow,
 } from "../activity-report/timesheet/common-types";
-import { fromServerFormat, isHoliday, isWeekend } from "../utils/date-utils";
-import { ProjectState } from "../store/project.state";
+import {
+  fromServerFormat,
+  isHoliday,
+  isWeekend,
+  toServerFormat,
+} from "../utils/date-utils";
 import keyBy from "lodash.keyby";
 import memoize from "lodash.memoize";
+import { ActivityReportSheetState } from "activity-report/store/activity-report-sheet.state";
+import { ProjectState } from "project/project.state";
+import moment from "moment";
 
 const fakeProjects = (p: number = 10) => {
   return [...Array(p).keys()].map(() => fakeProject());
@@ -49,7 +52,8 @@ export const getFakeActivityReports = (
     entities: {},
     columns: [],
     mode: SheetMode.EDITTING,
-    month: null,
+    month: toServerFormat(moment()),
+    loading: false,
   };
 
   result.ids = activityReports.map((a) => a.id);

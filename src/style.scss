@@ -16,15 +16,15 @@ table {
   th {
     min-width: var(--cell-width);
     height: 36px;
-    & > .cell,
-    & > .cell-project {
+    & > .head,
+    & > .head-project, & > .head-empty {
       display: flex;
       flex-flow: column;
       justify-content: center;
       height: 100%;
       border: 1px solid var(--timesheet-border-color);
     }
-    & > .cell {
+    & > .head {
       max-width: var(--cell-max-width);
     }
   }
@@ -36,6 +36,9 @@ table {
         border-radius: 20px
       }
     }
+    }
+    .context-cell {
+      padding: 2px 8px;
     }
   }
   td {
@@ -60,7 +63,7 @@ td .ant-badge {
   }
 }
 
-.cell-selection-layer {
+.cell-selection-layer, .cell-content {
   position: absolute;
   top: 0;
   right: 0;
@@ -69,18 +72,29 @@ td .ant-badge {
   border-radius: var(--cell-border-radius)
 }
 
+.cell-content {
+  z-index: 1;
+  display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .cell, .cell-selection-layer {
   &:hover {
     background-color: #00D7F0 !important; 
   }
 }
 
+.cell-in-range {
+  background-color: #e1e1de !important
+}
+
 .cell-selected {
   background-color: #f9fae1 !important;
 }
 
-.cell-dragging {
-  cursor: grab;
+.dragging {
+  cursor: grabbing !important;
 }
 
 .cell-approved {

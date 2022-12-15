@@ -1,24 +1,20 @@
+import { useTimesheetSelectionApi } from "activity-report/hooks/use-timesheet-selection-api.hook";
 import { RowCellIdentifiers } from "activity-report/timesheet/common-types";
-import { useTimesheetSelectionApi } from "activity-report/timesheet/selection/use-timesheet-selection-api.hook";
-import { PointerEventHandler, useMemo, useRef } from "react";
+import { FC, PointerEventHandler, useMemo } from "react";
 import { hasClass } from "utils/classname-utils";
 import { getKey } from "utils/sheet-utils";
 import { Id } from "utils/types";
+import { CancalablePointer } from "./cancelable-pointer-events.hoc";
 
-export interface CancelablePointerProps {
+export interface CancelableSelectionPointerProps {
   activityReportId: Id;
   day: string;
   className?: string;
 }
 
-export interface CancelablePointerEvents {
-  onPointerCancel: PointerEventHandler<HTMLDivElement>;
-  onPointerCancelCapture: PointerEventHandler<HTMLDivElement>;
-}
-
-export const WithCancalablePointer =
-  <P extends CancelablePointerProps>(Component: any) =>
-  (props: P) => {
+export const WithCancalableSelectionPointer =
+  <T extends CancelableSelectionPointerProps>(Component: FC<T>) =>
+  (props: T) => {
     const { activityReportId, day, className } = props;
 
     const payload: RowCellIdentifiers = useMemo(
@@ -42,7 +38,6 @@ export const WithCancalablePointer =
     const onPointerDown: PointerEventHandler<HTMLDivElement> = (ev) => {
       handleCtrl(ev);
       if (hasClass(ev, rootCls)) {
-        console.log("down");
         startDrag();
       }
     };
@@ -55,7 +50,6 @@ export const WithCancalablePointer =
     const resetCtrl = () => isHolidingCtrl(false);
     const onCancel = (ev) => {
       if (hasClass(ev, rootCls)) {
-        console.log("cancel");
         endDrag();
         resetCtrl();
       }
@@ -76,7 +70,7 @@ export const WithCancalablePointer =
     };
 
     return (
-      <td
+      <CancalablePointer
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerCancelCapture={onPointerCancelCapture}
@@ -85,6 +79,6 @@ export const WithCancalablePointer =
         className={className}
       >
         <Component {...props} />
-      </td>
+      </CancalablePointer>
     );
   };

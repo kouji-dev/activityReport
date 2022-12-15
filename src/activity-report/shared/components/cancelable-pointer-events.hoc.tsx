@@ -1,0 +1,16 @@
+import { FC, PointerEventHandler, PropsWithChildren } from "react";
+
+export interface CancelablePointerProps {
+  onPointerDown: PointerEventHandler<HTMLDivElement>;
+  onPointerMove: PointerEventHandler<HTMLDivElement>;
+  onPointerUp: PointerEventHandler<HTMLDivElement>;
+  onPointerCancel: PointerEventHandler<HTMLDivElement>;
+  onPointerCancelCapture: PointerEventHandler<HTMLDivElement>;
+  className?: string;
+}
+
+export const CancalablePointer: FC<
+  PropsWithChildren<CancelablePointerProps>
+> = (props) => {
+  return <td {...props}>{props.children}</td>;
+};

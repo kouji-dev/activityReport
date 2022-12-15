@@ -1,7 +1,7 @@
-import { Moment } from 'moment';
-import React, { FC, memo, useEffect, useState } from 'react';
-import { useSheetColumns } from '../../../utils/date-utils';
-import { Th, ThProject } from './timesheet-th.component';
+import { Moment } from "moment";
+import { FC, memo } from "react";
+import { useSheetColumns } from "utils/date-utils";
+import { Th, TableHeadToolbox, ThProject } from "./timesheet-th.component";
 
 interface Props {}
 
@@ -25,6 +25,7 @@ export const TimesheetHead: FC<Props> = memo((props) => {
         {columns.map((col: HeadCol, key) => (
           <Th key={key} {...col} />
         ))}
+        <TableHeadToolbox />
       </tr>
     </thead>
   );

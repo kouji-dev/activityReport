@@ -4,9 +4,12 @@ import { useSelector } from "react-redux";
 import { Badge } from "antd";
 import { activityStatusSelector } from "activity-report/store/selectors/activity-report-sheet.selectors";
 import { SheetCellStatus } from "activity-report/timesheet/common-types";
-import { COLORS } from "@shared/colors";
-import { isCellSelectedSelector } from "activity-report/store/selectors/activity-report-sheet-selection.selectors";
+import {
+  isCellInSelectionSelector,
+  isCellSelectedSelector,
+} from "activity-report/store/selectors/activity-report-sheet-selection.selectors";
 import { Id } from "utils/types";
+import { COLORS } from "activity-report/shared/colors";
 
 interface Props {
   activityReportId: Id;
@@ -15,11 +18,15 @@ interface Props {
 
 export const TimesheetCellSelectionLayer: FC<Props> = memo((props) => {
   const { activityReportId, day } = props;
-  const selected = useSelector(isCellSelectedSelector(activityReportId, day));
+  const selecting = useSelector(isCellSelectedSelector(activityReportId, day));
+  const selected = useSelector(
+    isCellInSelectionSelector(activityReportId, day)
+  );
   const status = useSelector(activityStatusSelector(activityReportId, day));
 
   const rootCls = "cell-selection-layer";
   const className = cls(rootCls, {
+    "cell-in-range": selecting && !selected,
     "cell-selected": selected,
     "cell-approved": status == SheetCellStatus.APPROVED,
     "cell-pending": status == SheetCellStatus.PENDING,

@@ -1,28 +1,34 @@
 import { Range } from "activity-report/timesheet/common-types";
+import moment from "moment";
 import { fromServerFormat, toServerFormat } from "./date-utils";
 import { Id } from "./types";
 
 export const getKey = (activityReportId: Id, day: string) =>
-  `${activityReportId}-${day}`;
+  `${activityReportId}||${day}`;
 
-export const generateRangeKeys = (activityReportId: Id, range: Range) => {
-  console.log(activityReportId, range);
+export const fromKey: (key: string) => { activityReportId: Id; day: string } = (
+  key: string
+) => {
+  const [activityReportId, day] = key.split("||");
+  return { activityReportId, day };
+};
+
+export const generateRangeKeys = (range: Range) => {
   if (!(range && range.length)) return [];
-  const keys = [];
+  const keys: string[] = [];
 
-  const [{ date: startDateString }, { date: endDateString }] = range;
+  const sortedRange = [...range].sort((a, b) => moment(a).diff(b));
 
-  const startDate = fromServerFormat(startDateString),
-    endDate = fromServerFormat(endDateString);
+  const [startDateString, endDateString] = sortedRange;
+
+  const startDate = fromServerFormat(startDateString);
 
   const tempDate = startDate.clone();
 
-  while (tempDate.isBetween(startDateString, endDateString)) {
-    keys.push(getKey(activityReportId, toServerFormat(tempDate)));
+  while (tempDate.isBetween(startDateString, endDateString, "date", "[]")) {
+    keys.push(toServerFormat(tempDate));
     tempDate.add(1, "days");
   }
-
-  console.log(keys);
 
   return keys;
 };

@@ -1,3 +1,5 @@
+import { IActivityReport } from "models/activity-report.model";
+import { IStandardActivity } from "models/standard-activity.model";
 import { Id } from "utils/types";
 import { HeadCols } from "./head/timesheet-head.component";
 
@@ -21,10 +23,16 @@ export enum SheetCellStatus {
   REJECTED = "REJECTED",
 }
 export enum SheetMode {
-  EDITTING,
-  VALIDATING,
-  READ_ONLY,
+  EDITTING = "EDITTING",
+  VALIDATING = "VALIDATING",
+  READ_ONLY = "READ_ONLY",
 }
+
+export const modes: SheetMode[] = [
+  SheetMode.EDITTING,
+  SheetMode.VALIDATING,
+  SheetMode.READ_ONLY,
+];
 
 export type SheetCell<T> = {
   date: string;
@@ -53,11 +61,16 @@ export type SheetRow<P, T> = {
 
 export type SheetRows<P, T> = Record<Id, SheetRow<P, T>>;
 
+export type SheetRowsRecords = Record<
+  Id,
+  SheetRow<IActivityReport, IStandardActivity>
+>;
+
 // Each Activity Report has many Activities
 export type SheetData<P, T> = {
   ids: Id[];
   entities: SheetRows<P, T>;
-  month: string;
+  month: string | null;
   columns: HeadCols;
   editable?: boolean;
   mode: SheetMode;
@@ -66,7 +79,7 @@ export type SheetData<P, T> = {
 export type CellIdentifier = {
   day: string;
   activityReportId: Id;
-} & { key: string };
+};
 
 export type RowKey = Id;
 
@@ -78,8 +91,14 @@ export type SelectionPayload = {
   ctrl?: boolean;
 } & RowCellIdentifiers;
 
-export type RangeItem = {
-  date: string;
-};
+export type RangeItem = string;
 
 export type Range = [] | [RangeItem, RangeItem];
+export type RangeDirection = "increasing" | "decreasing";
+
+export type UpdateOrRemovePayload = {
+  upsert: Record<string, string[]>;
+  remove: Record<string, string[]>;
+};
+
+export type Selection = Record<Id, Set<string>>;

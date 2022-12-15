@@ -1,13 +1,15 @@
 import { FC, memo } from "react";
-import cls from "classnames";
 import {
-  CancelablePointerProps,
-  WithCancalablePointer,
-} from "@shared/components/cancelable-pointer-events.hoc";
+  CancelableSelectionPointerProps,
+  WithCancalableSelectionPointer,
+} from "activity-report/shared/components/cancelable-selection-pointer-events.hoc";
+import cls from "classnames";
+import { Typography } from "antd";
+const CellPointerListener = WithCancalableSelectionPointer(() => (
+  <Typography.Text disabled>W</Typography.Text>
+));
 
-const CellPointerListener = WithCancalablePointer(() => <>W</>);
-
-interface Props extends CancelablePointerProps {}
+interface Props extends CancelableSelectionPointerProps {}
 
 export const WeekendCell: FC<Props> = memo((props) => {
   const className = cls("cell", "cell-disabled");

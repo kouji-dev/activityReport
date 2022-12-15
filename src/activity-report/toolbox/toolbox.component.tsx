@@ -1,4 +1,6 @@
-import { Button, Space } from "antd";
+import { Space } from "antd";
+import { SheetMode } from "./sheet-mode.component";
+import { SheetSubmit } from "./submit/sheet-submit.component";
 import { TimesheetStatus } from "./timesheet-status.component";
 
 export const Toolbox = () => {
@@ -11,9 +13,10 @@ export const Toolbox = () => {
         gap: "10px",
       }}
     >
-      <Space align="end">
-        <Button>Approve</Button>
-      </Space>
+      <Space.Compact>
+        <SheetMode />
+        <SheetSubmit />
+      </Space.Compact>
       <TimesheetStatus />
     </div>
   );
