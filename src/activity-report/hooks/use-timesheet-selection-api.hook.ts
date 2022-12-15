@@ -1,6 +1,10 @@
 import { ActivityReportSelectionActions } from "activity-report/store/activity-report-sheet-selection.state";
-import { RowCellIdentifiers } from "activity-report/timesheet/common-types";
-import { useCallback, useMemo } from "react";
+import { sheetModeSelector } from "activity-report/store/selectors/activity-report-sheet.selectors";
+import {
+  RowCellIdentifiers,
+  SheetMode,
+} from "activity-report/timesheet/common-types";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "store";
 
@@ -15,9 +19,15 @@ export const useTimesheetSelectionApi: (
   payload: RowCellIdentifiers
 ) => TimesheetSelectionApi = (payload: RowCellIdentifiers) => {
   const dispatch = useDispatch();
-  const mode = useSelector(sheetModeSelector)
+  const sheetMode = useSelector(sheetModeSelector);
+  const sheetModeRef = useRef<SheetMode>(sheetMode);
+
+  useEffect(() => {
+    sheetModeRef.current = sheetMode;
+  }, [sheetMode]);
 
   const startDrag = useCallback(() => {
+    console.log(sheetModeRef.current);
     dispatch(ActivityReportSelectionActions.startDrag(payload));
   }, []);
 
@@ -27,7 +37,7 @@ export const useTimesheetSelectionApi: (
         ActivityReportSelectionActions.onSelecting({ ...payload, ctrl })
       );
     },
-    [payload.rowKey, payload.key]
+    [payload.rowKey, payload.activityReportId, payload.day]
   );
 
   const endDrag = useCallback(() => {
