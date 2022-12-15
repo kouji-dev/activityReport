@@ -3,6 +3,7 @@ import {
   SheetData,
   SheetMode,
   getDefaultHalfDay,
+  Selection,
 } from ".././timesheet/common-types";
 import { IStandardActivity } from "../../models/standard-activity.model";
 import {
@@ -14,7 +15,13 @@ import {
 import { getFakeActivityReports } from "../../fakeData/fake-data";
 import { IActivityReport } from "../../models/activity-report.model";
 import { createAsyncThunk } from "utils/store-utils";
-import { submitReportsThunk } from "./thunks/activity-report-sheet.thunks";
+import {
+  declareAllThunk,
+  declareSelectionThunk,
+  submitReportsThunk,
+  undeclareAllThunk,
+} from "./thunks/activity-report-sheet.thunks";
+import { Id } from "utils/types";
 
 export const namespace = `activity-report`;
 
@@ -53,21 +60,18 @@ export const activityReportState = createSlice({
       .addCase(
         fetchActivityReports.fulfilled,
         (
-          state: ActivityReportSheetState,
+          _: ActivityReportSheetState,
           action: PayloadAction<ActivityReportSheetState>
         ) => {
           return action.payload;
         }
       )
       .addCase(
-        submitReportsThunk.fulfilled,
-        (
-          state: ActivityReportSheetState,
-          action: PayloadAction<{ [key: string]: string[] }>
-        ) => {
-          const payload = action.payload;
-          Object.keys(payload).forEach((activityReportId) => {
-            for (const day of payload[activityReportId]) {
+        declareSelectionThunk.fulfilled,
+        (state: ActivityReportSheetState, action: PayloadAction<Selection>) => {
+          const keys = action.payload;
+          Object.keys(keys).forEach((activityReportId) => {
+            for (const day of keys[activityReportId].values()) {
               const activityReport = state.entities[activityReportId];
               if (!activityReport.entities[day]) {
                 activityReport.ids.push(day);
@@ -80,6 +84,14 @@ export const activityReportState = createSlice({
               }
             }
           });
+        }
+      )
+      .addCase(
+        undeclareAllThunk.fulfilled,
+        (state: ActivityReportSheetState, action: PayloadAction<Id>) => {
+          const activityReportId = action.payload;
+          state.entities[activityReportId].ids = [];
+          state.entities[activityReportId].entities = {};
         }
       )
       .addMatcher(
@@ -112,6 +124,8 @@ const fetchActivityReports = createAsyncThunk(
 export const ActivityReportActions = {
   ...activityReportState.actions,
   fetchActivityReports,
+  undeclareAllThunk,
+  declareAllThunk,
 };
 
 // Reducer

@@ -13,10 +13,10 @@ export const Toolbox = () => {
         gap: "10px",
       }}
     >
-      <Space align="end">
+      <Space.Compact>
         <SheetMode />
         <SheetSubmit />
-      </Space>
+      </Space.Compact>
       <TimesheetStatus />
     </div>
   );

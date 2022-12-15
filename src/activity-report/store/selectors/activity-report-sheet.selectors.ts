@@ -22,6 +22,10 @@ export const activityReportIdsSelector = createSelector(
   selectRoot,
   (state: ActivityReportSheetState) => state.ids
 );
+export const activityReportMonthSelector = createSelector(
+  selectRoot,
+  (state: ActivityReportSheetState) => state.month
+);
 const sheetDataSelector = createSelector(
   selectRoot,
   (state: ActivityReportSheetState) => state.entities
@@ -157,25 +161,25 @@ export const canSubmitSelector = createSelector(
   (
     entities: SheetRowsRecords,
     isSheetEditting: boolean,
-    selection: Set<string>
+    selection: Record<string, Set<string>>
   ) =>
     isSheetEditting &&
-    selection.size &&
+    Object.keys(selection).length &&
     Object.keys(entities).some(
       (activityReportId) => !entities[activityReportId]?.meta?.submitted
     )
 );
 
-export const cellTotalSelector = 
+export const cellTotalSelector =
   (activityReportId: Id, day: string) => (state: IRootState) =>
     createSelector(
       [activitySelector(activityReportId, day)],
       (cell: SheetCell<IStandardActivity>) => {
-        if(!cell) return undefined;
-        const {morning, afternoon} = cell;
+        if (!cell) return undefined;
+        const { morning, afternoon } = cell;
         let total = undefined;
-        if(morning?.is) total=+ 1;
-        if(afternoon?.is) total=+ 1;
-        return  total;
+        if (morning?.is) total = +1;
+        if (afternoon?.is) total = +1;
+        return total;
       }
     )(state, activityReportId, day);

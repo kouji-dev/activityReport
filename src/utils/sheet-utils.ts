@@ -13,9 +13,9 @@ export const fromKey: (key: string) => { activityReportId: Id; day: string } = (
   return { activityReportId, day };
 };
 
-export const generateRangeKeys = (activityReportId: Id, range: Range) => {
+export const generateRangeKeys = (range: Range) => {
   if (!(range && range.length)) return [];
-  const keys = [];
+  const keys: string[] = [];
 
   const sortedRange = [...range].sort((a, b) => moment(a).diff(b));
 
@@ -26,7 +26,7 @@ export const generateRangeKeys = (activityReportId: Id, range: Range) => {
   const tempDate = startDate.clone();
 
   while (tempDate.isBetween(startDateString, endDateString, "date", "[]")) {
-    keys.push(getKey(activityReportId, toServerFormat(tempDate)));
+    keys.push(toServerFormat(tempDate));
     tempDate.add(1, "days");
   }
 

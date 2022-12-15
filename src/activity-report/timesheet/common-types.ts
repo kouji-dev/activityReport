@@ -61,7 +61,10 @@ export type SheetRow<P, T> = {
 
 export type SheetRows<P, T> = Record<Id, SheetRow<P, T>>;
 
-export type SheetRowsRecords = Record<Id, SheetRow<IActivityReport, IStandardActivity>>
+export type SheetRowsRecords = Record<
+  Id,
+  SheetRow<IActivityReport, IStandardActivity>
+>;
 
 // Each Activity Report has many Activities
 export type SheetData<P, T> = {
@@ -76,7 +79,7 @@ export type SheetData<P, T> = {
 export type CellIdentifier = {
   day: string;
   activityReportId: Id;
-} & { key: string };
+};
 
 export type RowKey = Id;
 
@@ -92,3 +95,10 @@ export type RangeItem = string;
 
 export type Range = [] | [RangeItem, RangeItem];
 export type RangeDirection = "increasing" | "decreasing";
+
+export type UpdateOrRemovePayload = {
+  upsert: Record<string, string[]>;
+  remove: Record<string, string[]>;
+};
+
+export type Selection = Record<Id, Set<string>>;

@@ -10,5 +10,5 @@ interface Props {
 export const TimesheetRowTotal: FC<Props> = (props) => {
   const { activityReportId } = props;
   const total = useSelector(activityReportTotalSelector(activityReportId));
-  return <td>{total}</td>;
+  return <td className="total-row">{total}</td>;
 };

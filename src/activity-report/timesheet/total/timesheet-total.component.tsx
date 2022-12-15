@@ -6,5 +6,5 @@ interface Props {}
 
 export const TimesheetTotal: FC<Props> = () => {
   const total = useSelector(sheetTotalSelector);
-  return <td>{total}</td>;
+  return <td className="total">{total}</td>;
 };

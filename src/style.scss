@@ -16,15 +16,15 @@ table {
   th {
     min-width: var(--cell-width);
     height: 36px;
-    & > .cell,
-    & > .cell-project {
+    & > .head,
+    & > .head-project, & > .head-empty {
       display: flex;
       flex-flow: column;
       justify-content: center;
       height: 100%;
       border: 1px solid var(--timesheet-border-color);
     }
-    & > .cell {
+    & > .head {
       max-width: var(--cell-max-width);
     }
   }

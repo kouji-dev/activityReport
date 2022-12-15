@@ -1,6 +1,5 @@
 import { Range, RangeDirection } from "activity-report/timesheet/common-types";
 import moment from "moment";
-import { getKey } from "utils/sheet-utils";
 import { createSelector } from "utils/store-utils";
 import { Id } from "utils/types";
 import { IRootState } from "../../../store";
@@ -84,7 +83,9 @@ export const isCellInSelectionSelector =
     createSelector(
       [
         selectionSelector,
-        (_, activityReportId: Id, day: string) => getKey(activityReportId, day),
+        (_, activityReportId: Id) => activityReportId,
+        (_, __, day: string) => day,
       ],
-      (selection: Set<string>, key: string) => selection.has(key)
+      (selection: Set<string>, activityReportId: Id, day: string) =>
+        selection[activityReportId] && selection[activityReportId].has(day)
     )(state, activityReportId, day);
