@@ -1,26 +1,47 @@
 * special activity: absence/intercontract
+* NF: new feature
 
 # Roadmap
 
 -   Display (always by month) :
-    -   activities by project
+    -[y]   activities by project
     -   activities by user
     -   pdf (print mode)
 -   Selection:
-    -   by range
-    -   by cell
+    -[y]   by range
+    -[y]   by cell
     -   toggling cell status
 -   Modes:
     -   edit:
-        -   can select all
+        -[y]   declare/undeclare all
         -   toggle already selected one
     -   validate:
-        -   can select only pending/valid/rejected cells
+        -[y]   can select only pending/valid/rejected cells
         -   selection does toggle cell status like (pending => valid, valid => rejected, rejected => valid)
     -   print:
-        - read only
-        - export to pdf/svg
+        -   read only
+        -   export to pdf/svg
+-   Total:
+        -[y]   row
+        -[y]   col
+        -[y]   all
 -   Validation:
     -   activities by project: total of each col/day is 1
     -   activities by user: total is calculated based on each cell
+-   Submission:
+    -   submit only when the report is valid
+-   Lock (NF):
+    -   ensure no changes if the report is locked
+-   Toolbox (NF):
+    -   context menu:
+        -   select/unselect all
+        -   declare all
+        -   reject all absence
+    -   global event listener:
+        -   bind all menu actions with shortcuts like (ctrl+A => select All)
+    -   row:
+        -   edit:
+            -   select/unselect all cells
+        -   validate:
+            -   approve/reject all cells
     
