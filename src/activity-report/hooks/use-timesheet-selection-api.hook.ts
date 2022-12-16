@@ -1,6 +1,7 @@
 import { ActivityReportSelectionActions } from "activity-report/store/activity-report-sheet-selection.state";
 import {
   endDragThunk,
+  onSelectingThunk,
   startDragThunk,
 } from "activity-report/store/thunks/activity-report-sheet-selection.thunks";
 import { RowCellIdentifiers } from "activity-report/timesheet/common-types";
@@ -26,7 +27,7 @@ export const useTimesheetSelectionApi: (
   const onSelecting = useCallback(
     (ctrl: boolean) => {
       dispatch(
-        ActivityReportSelectionActions.onSelecting({
+        onSelectingThunk({
           ...payload,
           ctrl,
         })

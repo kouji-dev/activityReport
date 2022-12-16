@@ -1,29 +1,37 @@
 import { CaseReducer, current, PayloadAction } from "@reduxjs/toolkit";
-import { RowCellIdentifiers, SheetMode } from "activity-report/timesheet/common-types";
+import {
+  RowCellIdentifiers,
+  SheetMode,
+} from "activity-report/timesheet/common-types";
 import moment from "moment";
 import { generateRangeKeys } from "utils/sheet-utils";
 import { Id } from "utils/types";
 import { ActivityReportSheetSelectionState } from "../activity-report-sheet-selection.state";
 
-export type StartDragPayload = RowCellIdentifiers & { canSelect?: boolean };
+export type StartDragPayload = RowCellIdentifiers & { mode: SheetMode };
 type StartDragAction = CaseReducer<
   ActivityReportSheetSelectionState,
   PayloadAction<StartDragPayload>
 >;
 export const startDragAction: StartDragAction = (state, action) => {
-  const payload: RowCellIdentifiers = action.payload;
+  const { rowKey, mode, day, activityReportId } = action.payload;
   const { dragging, selection, ctrl, range } = state;
-  dragging.add(payload.rowKey);
-  if (!selection[payload.activityReportId])
-    selection[payload.activityReportId] = new Set<string>();
-  selection[payload.activityReportId].add(payload.day);
+  dragging.add(rowKey);
+  if (!selection[activityReportId]) {
+    selection[activityReportId] = new Set<string>();
+  }
+  if (mode === SheetMode.EDITTING) {
+    selection[activityReportId].add(day);
+  }
   if (ctrl) {
-    range[0] = payload.day;
+    range[0] = day;
   }
 };
 
 export type OnSelectionPayload = {
   ctrl?: boolean;
+  mode: SheetMode;
+  cellExists: boolean;
 } & RowCellIdentifiers;
 type OnSelectionAction = CaseReducer<
   ActivityReportSheetSelectionState,
@@ -31,39 +39,43 @@ type OnSelectionAction = CaseReducer<
 >;
 export const onSelectingAction: OnSelectionAction = (state, action) => {
   const payload = action.payload;
-  const { activityReportId, day } = action.payload;
+  const { activityReportId, day, mode, cellExists } = action.payload;
   const { ctrl, dragging, selection, range } = state;
 
+  const keyFound =
+    selection[activityReportId] && selection[activityReportId].has(day);
+  if (keyFound) return;
+
   const wasHoldingCtrl = ctrl;
-  const keyNotFound = !(
-    selection[activityReportId] && selection[activityReportId].has(day)
-  );
   const stillHoldingCtrl = ctrl && payload.ctrl == ctrl;
 
-  if (!keyNotFound) return;
   if (wasHoldingCtrl && stillHoldingCtrl) {
     const isRowDragging = dragging.has(payload.rowKey);
     if (isRowDragging) {
-      if (!range[1])
-        state.rangeDirection = moment(range[0]).isBefore(payload.day)
-          ? "increasing"
-          : "decreasing";
+      state.rangeDirection = moment(range[0]).isBefore(payload.day)
+        ? "increasing"
+        : "decreasing";
       range[1] = payload.day;
     }
   } else {
     const isDragging = dragging.size;
-    if (isDragging && keyNotFound) {
+    if (isDragging && !keyFound) {
       if (!selection[activityReportId]) {
         selection[activityReportId] = new Set<string>();
       }
-      selection[activityReportId].add(day);
+      if (
+        mode === SheetMode.EDITTING ||
+        (mode == SheetMode.VALIDATING && cellExists)
+      ) {
+        selection[activityReportId].add(day);
+      }
     }
   }
 };
 
 export type EndDragPayload = RowCellIdentifiers & {
-    existingCells: Id[];
-    mode: SheetMode;
+  existingCells: Id[];
+  mode: SheetMode;
 };
 type EndDragAction = CaseReducer<
   ActivityReportSheetSelectionState,
@@ -80,7 +92,11 @@ export const endDragAction: EndDragAction = (state, action) => {
     // selection.add(payload.key);
     range[1] = payload.day;
     // select items from range{0} to range{1}
-    const rangeKeys = generateRangeKeys(current(range), existingCells, mode === SheetMode.VALIDATING);
+    const rangeKeys = generateRangeKeys(
+      current(range),
+      existingCells,
+      mode === SheetMode.VALIDATING
+    );
     for (const key of rangeKeys) {
       selection[activityReportId].add(key);
     }
@@ -88,8 +104,11 @@ export const endDragAction: EndDragAction = (state, action) => {
     if (!selection[activityReportId]) {
       selection[activityReportId] = new Set<string>();
     }
-    if(mode === SheetMode.EDITTING || (mode === SheetMode.VALIDATING && existingCells.includes(day))) {
-        selection[activityReportId].add(day);
+    if (
+      mode === SheetMode.EDITTING ||
+      (mode === SheetMode.VALIDATING && existingCells.includes(day))
+    ) {
+      selection[activityReportId].add(day);
     }
   }
   state.range = [];

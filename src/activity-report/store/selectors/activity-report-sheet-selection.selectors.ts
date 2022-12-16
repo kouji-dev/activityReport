@@ -33,9 +33,9 @@ const rangeDirectionSelector = createSelector(
 );
 
 export const isDraggingSelector = createSelector(
-      [draggingSelector],
-      (dragging: Set<string>) => dragging.size > 0
-)
+  [draggingSelector],
+  (dragging: Set<string>) => dragging.size > 0
+);
 
 export const isDraggingRowSelector =
   (activityReportId: Id) => (state: IRootState) =>

@@ -12,4 +12,4 @@ TODO List
         []  validate intersection of cells
             - the total of a column should not exceed 1 including special activities
             - user can't save
-        []  display gloabl status of the report (Approved, Rejected, Submitted, Waiting Approval, Newly Created)
+        [x]  display gloabl status of the report (Approved, Rejected, Submitted, Waiting Approval, Newly Created)
