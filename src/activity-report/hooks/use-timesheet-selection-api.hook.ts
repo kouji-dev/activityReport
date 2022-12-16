@@ -27,21 +27,34 @@ export const useTimesheetSelectionApi: (
   }, [sheetMode]);
 
   const startDrag = useCallback(() => {
-    console.log(sheetModeRef.current);
-    dispatch(ActivityReportSelectionActions.startDrag(payload));
+    dispatch(
+      ActivityReportSelectionActions.startDragThunk({
+        ...payload,
+        mode: sheetModeRef.current,
+      })
+    );
   }, []);
 
   const onSelecting = useCallback(
     (ctrl: boolean) => {
       dispatch(
-        ActivityReportSelectionActions.onSelecting({ ...payload, ctrl })
+        ActivityReportSelectionActions.onSelecting({
+          ...payload,
+          ctrl,
+          mode: sheetModeRef.current,
+        })
       );
     },
     [payload.rowKey, payload.activityReportId, payload.day]
   );
 
   const endDrag = useCallback(() => {
-    dispatch(ActivityReportSelectionActions.endDrag(payload));
+    dispatch(
+      ActivityReportSelectionActions.endDrag({
+        ...payload,
+        mode: sheetModeRef.current,
+      })
+    );
   }, []);
 
   const isHolidingCtrl = useCallback((ctrl: boolean) => {
