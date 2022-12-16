@@ -1,24 +1,30 @@
 import { CaseReducer, current, PayloadAction } from "@reduxjs/toolkit";
-import { RowCellIdentifiers, SheetMode } from "activity-report/timesheet/common-types";
+import {
+  RowCellIdentifiers,
+  SheetMode,
+} from "activity-report/timesheet/common-types";
 import moment from "moment";
 import { generateRangeKeys } from "utils/sheet-utils";
 import { Id } from "utils/types";
 import { ActivityReportSheetSelectionState } from "../activity-report-sheet-selection.state";
 
-export type StartDragPayload = RowCellIdentifiers & { canSelect?: boolean };
+export type StartDragPayload = RowCellIdentifiers & { mode: SheetMode };
 type StartDragAction = CaseReducer<
   ActivityReportSheetSelectionState,
   PayloadAction<StartDragPayload>
 >;
 export const startDragAction: StartDragAction = (state, action) => {
-  const payload: RowCellIdentifiers = action.payload;
+  const { rowKey, mode, day, activityReportId } = action.payload;
   const { dragging, selection, ctrl, range } = state;
-  dragging.add(payload.rowKey);
-  if (!selection[payload.activityReportId])
-    selection[payload.activityReportId] = new Set<string>();
-  selection[payload.activityReportId].add(payload.day);
+  dragging.add(rowKey);
+  if (!selection[activityReportId]) {
+    selection[activityReportId] = new Set<string>();
+  }
+  if (mode === SheetMode.EDITTING) {
+    selection[activityReportId].add(day);
+  }
   if (ctrl) {
-    range[0] = payload.day;
+    range[0] = day;
   }
 };
 
@@ -62,8 +68,8 @@ export const onSelectingAction: OnSelectionAction = (state, action) => {
 };
 
 export type EndDragPayload = RowCellIdentifiers & {
-    existingCells: Id[];
-    mode: SheetMode;
+  existingCells: Id[];
+  mode: SheetMode;
 };
 type EndDragAction = CaseReducer<
   ActivityReportSheetSelectionState,
@@ -80,7 +86,11 @@ export const endDragAction: EndDragAction = (state, action) => {
     // selection.add(payload.key);
     range[1] = payload.day;
     // select items from range{0} to range{1}
-    const rangeKeys = generateRangeKeys(current(range), existingCells, mode === SheetMode.VALIDATING);
+    const rangeKeys = generateRangeKeys(
+      current(range),
+      existingCells,
+      mode === SheetMode.VALIDATING
+    );
     for (const key of rangeKeys) {
       selection[activityReportId].add(key);
     }
@@ -88,8 +98,11 @@ export const endDragAction: EndDragAction = (state, action) => {
     if (!selection[activityReportId]) {
       selection[activityReportId] = new Set<string>();
     }
-    if(mode === SheetMode.EDITTING || (mode === SheetMode.VALIDATING && existingCells.includes(day))) {
-        selection[activityReportId].add(day);
+    if (
+      mode === SheetMode.EDITTING ||
+      (mode === SheetMode.VALIDATING && existingCells.includes(day))
+    ) {
+      selection[activityReportId].add(day);
     }
   }
   state.range = [];

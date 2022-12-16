@@ -7,6 +7,7 @@ import { createAsyncThunk } from "utils/store-utils";
 import {
   EndDragPayload,
   startDragAction,
+  StartDragPayload,
 } from "../actions/activity-report-sheet-selection.actions";
 import {
   ActivityReportSelectionActions,
@@ -29,14 +30,14 @@ export const startDragThunk = createAsyncThunk<
   StartDragThunkReturn,
   StartDragThunkPayload
 >(`${namespace}/startDragThunk`, async (payload, { getState, dispatch }) => {
-  const { activityReportId, day } = payload;
-  const cell =
-    getState().activityReport.entities[activityReportId]?.entities[day];
-  const isEdittable = getState().activityReport.mode === SheetMode.EDITTING;
-
-  if (cell || isEdittable) {
-    dispatch(ActivityReportSelectionActions.startDrag(payload));
+  const currentState = getState().activityReport;
+  
+  const startDragPayload: StartDragPayload = {
+    ...payload,
+    mode: currentState.mode
   }
+
+  dispatch(ActivityReportSelectionActions.startDrag(startDragPayload));
 });
 
 type EndDragThunkReturn = void;
