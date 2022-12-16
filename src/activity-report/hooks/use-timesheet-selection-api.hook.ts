@@ -1,11 +1,10 @@
 import { ActivityReportSelectionActions } from "activity-report/store/activity-report-sheet-selection.state";
-import { sheetModeSelector } from "activity-report/store/selectors/activity-report-sheet.selectors";
 import {
-  RowCellIdentifiers,
-  SheetMode,
-} from "activity-report/timesheet/common-types";
-import { useCallback, useEffect, useMemo, useRef } from "react";
-import { useSelector } from "react-redux";
+  endDragThunk,
+  startDragThunk,
+} from "activity-report/store/thunks/activity-report-sheet-selection.thunks";
+import { RowCellIdentifiers } from "activity-report/timesheet/common-types";
+import { useCallback, useMemo } from "react";
 import { useDispatch } from "store";
 
 export type TimesheetSelectionApi = {
@@ -19,20 +18,9 @@ export const useTimesheetSelectionApi: (
   payload: RowCellIdentifiers
 ) => TimesheetSelectionApi = (payload: RowCellIdentifiers) => {
   const dispatch = useDispatch();
-  const sheetMode = useSelector(sheetModeSelector);
-  const sheetModeRef = useRef<SheetMode>(sheetMode);
-
-  useEffect(() => {
-    sheetModeRef.current = sheetMode;
-  }, [sheetMode]);
 
   const startDrag = useCallback(() => {
-    dispatch(
-      ActivityReportSelectionActions.startDragThunk({
-        ...payload,
-        mode: sheetModeRef.current,
-      })
-    );
+    dispatch(startDragThunk(payload));
   }, []);
 
   const onSelecting = useCallback(
@@ -41,7 +29,6 @@ export const useTimesheetSelectionApi: (
         ActivityReportSelectionActions.onSelecting({
           ...payload,
           ctrl,
-          mode: sheetModeRef.current,
         })
       );
     },
@@ -49,12 +36,7 @@ export const useTimesheetSelectionApi: (
   );
 
   const endDrag = useCallback(() => {
-    dispatch(
-      ActivityReportSelectionActions.endDrag({
-        ...payload,
-        mode: sheetModeRef.current,
-      })
-    );
+    dispatch(endDragThunk(payload));
   }, []);
 
   const isHolidingCtrl = useCallback((ctrl: boolean) => {

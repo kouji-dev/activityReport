@@ -85,11 +85,7 @@ export type RowKey = Id;
 
 export type RowCellIdentifiers = {
   rowKey: RowKey;
-} & CellIdentifier & { mode: SheetMode };
-
-export type SelectionPayload = {
-  ctrl?: boolean;
-} & RowCellIdentifiers;
+} & CellIdentifier;
 
 export type RangeItem = string;
 
