@@ -30,6 +30,8 @@ export const startDragAction: StartDragAction = (state, action) => {
 
 export type OnSelectionPayload = {
   ctrl?: boolean;
+  mode: SheetMode;
+  cellExists: boolean;
 } & RowCellIdentifiers;
 type OnSelectionAction = CaseReducer<
   ActivityReportSheetSelectionState,
@@ -37,32 +39,36 @@ type OnSelectionAction = CaseReducer<
 >;
 export const onSelectingAction: OnSelectionAction = (state, action) => {
   const payload = action.payload;
-  const { activityReportId, day } = action.payload;
+  const { activityReportId, day, mode, cellExists } = action.payload;
   const { ctrl, dragging, selection, range } = state;
 
+  const keyFound =
+    selection[activityReportId] && selection[activityReportId].has(day);
+  if (keyFound) return;
+
   const wasHoldingCtrl = ctrl;
-  const keyNotFound = !(
-    selection[activityReportId] && selection[activityReportId].has(day)
-  );
   const stillHoldingCtrl = ctrl && payload.ctrl == ctrl;
 
-  if (!keyNotFound) return;
   if (wasHoldingCtrl && stillHoldingCtrl) {
     const isRowDragging = dragging.has(payload.rowKey);
     if (isRowDragging) {
-      if (!range[1])
-        state.rangeDirection = moment(range[0]).isBefore(payload.day)
-          ? "increasing"
-          : "decreasing";
+      state.rangeDirection = moment(range[0]).isBefore(payload.day)
+        ? "increasing"
+        : "decreasing";
       range[1] = payload.day;
     }
   } else {
     const isDragging = dragging.size;
-    if (isDragging && keyNotFound) {
+    if (isDragging && !keyFound) {
       if (!selection[activityReportId]) {
         selection[activityReportId] = new Set<string>();
       }
-      selection[activityReportId].add(day);
+      if (
+        mode === SheetMode.EDITTING ||
+        (mode == SheetMode.VALIDATING && cellExists)
+      ) {
+        selection[activityReportId].add(day);
+      }
     }
   }
 };

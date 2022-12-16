@@ -1,12 +1,8 @@
-import {
-  RowCellIdentifiers,
-  SheetCellStatus,
-  SheetMode,
-} from "activity-report/timesheet/common-types";
+import { RowCellIdentifiers } from "activity-report/timesheet/common-types";
 import { createAsyncThunk } from "utils/store-utils";
 import {
   EndDragPayload,
-  startDragAction,
+  OnSelectionPayload,
   StartDragPayload,
 } from "../actions/activity-report-sheet-selection.actions";
 import {
@@ -31,11 +27,11 @@ export const startDragThunk = createAsyncThunk<
   StartDragThunkPayload
 >(`${namespace}/startDragThunk`, async (payload, { getState, dispatch }) => {
   const currentState = getState().activityReport;
-  
+
   const startDragPayload: StartDragPayload = {
     ...payload,
-    mode: currentState.mode
-  }
+    mode: currentState.mode,
+  };
 
   dispatch(ActivityReportSelectionActions.startDrag(startDragPayload));
 });
@@ -54,4 +50,20 @@ export const endDragThunk = createAsyncThunk<
     mode: currentState.mode,
   };
   dispatch(ActivityReportSelectionActions.endDrag(endDragPayload));
+});
+
+type OnSelectingThunkReturn = void;
+type OnSelectingThunkPayload = { ctrl?: boolean } & RowCellIdentifiers;
+export const onSelectingThunk = createAsyncThunk<
+  OnSelectingThunkReturn,
+  OnSelectingThunkPayload
+>(`${namespace}/onSelectingThunk`, async (payload, { getState, dispatch }) => {
+  const { activityReportId, day } = payload;
+  const currentState = getState().activityReport;
+  const onSelectingPayload: OnSelectionPayload = {
+    ...payload,
+    cellExists: currentState.entities[activityReportId].ids.includes(day),
+    mode: currentState.mode,
+  };
+  dispatch(ActivityReportSelectionActions.onSelecting(onSelectingPayload));
 });
