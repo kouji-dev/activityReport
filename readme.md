@@ -1,15 +1,46 @@
 * special activity: absence/intercontract
+* NF: new feature
 
-TODO List   
-        [y] selection
-        [y] declare activities
-        [y] select only existing cells in validation mode
-        [x] ability to toggle selection
-        [x] support multiple modes: edit, validate, print
-        [x] toggle approve/reject all activities for a specific project
-        [x] add morning/afternoon capability
-        []  ability to add a special activity
-        []  validate intersection of cells
-            - the total of a column should not exceed 1 including special activities
-            - user can't save
-        [x]  display gloabl status of the report (Approved, Rejected, Submitted, Waiting Approval, Newly Created)
+# Roadmap
+
+-   Display (always by month) :
+    -[y]   activities by project
+    -   activities by user
+    -   pdf (print mode)
+-   Selection:
+    -[y]   by range
+    -[y]   by cell
+    -   toggling cell status
+-   Modes:
+    -   edit:
+        -[y]   declare/undeclare all
+        -   toggle already selected one
+    -   validate:
+        -[y]   can select only pending/valid/rejected cells
+        -   selection does toggle cell status like (pending => valid, valid => rejected, rejected => valid)
+    -   print:
+        -   read only
+        -   export to pdf/svg
+-   Total:
+        -[y]   row
+        -[y]   col
+        -[y]   all
+-   Validation:
+    -   activities by project: total of each col/day is 1
+    -   activities by user: total is calculated based on each cell
+-   Submission:
+    -   submit only when the report is valid
+-   Lock (NF):
+    -   ensure no changes if the report is locked
+-   Toolbox (NF):
+    -   context menu:
+        -   select/unselect all
+        -   declare all
+        -   reject all absence
+    -   global event listener:
+        -   bind all menu actions with shortcuts like (ctrl+A => select All)
+    -   row:
+        -   edit:
+            -   select/unselect all cells
+        -   validate:
+            -   approve/reject all cells
