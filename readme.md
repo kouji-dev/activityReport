@@ -44,4 +44,3 @@
             -   select/unselect all cells
         -   validate:
             -   approve/reject all cells
-    
