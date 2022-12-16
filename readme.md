@@ -1,15 +1,26 @@
 * special activity: absence/intercontract
 
-TODO List   
-        [y] selection
-        [y] declare activities
-        [y] select only existing cells in validation mode
-        [x] ability to toggle selection
-        [x] support multiple modes: edit, validate, print
-        [x] toggle approve/reject all activities for a specific project
-        [x] add morning/afternoon capability
-        []  ability to add a special activity
-        []  validate intersection of cells
-            - the total of a column should not exceed 1 including special activities
-            - user can't save
-        [x]  display gloabl status of the report (Approved, Rejected, Submitted, Waiting Approval, Newly Created)
+# Roadmap
+
+-   Display (always by month) :
+    -   activities by project
+    -   activities by user
+    -   pdf (print mode)
+-   Selection:
+    -   by range
+    -   by cell
+    -   toggling cell status
+-   Modes:
+    -   edit:
+        -   can select all
+        -   toggle already selected one
+    -   validate:
+        -   can select only pending/valid/rejected cells
+        -   selection does toggle cell status like (pending => valid, valid => rejected, rejected => valid)
+    -   print:
+        - read only
+        - export to pdf/svg
+-   Validation:
+    -   activities by project: total of each col/day is 1
+    -   activities by user: total is calculated based on each cell
+    
