@@ -3,6 +3,7 @@
 TODO List   
         [y] selection
         [y] declare activities
+        [y] select only existing cells in validation mode
         [x] ability to toggle selection
         [x] support multiple modes: edit, validate, print
         [x] toggle approve/reject all activities for a specific project

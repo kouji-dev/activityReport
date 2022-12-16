@@ -87,10 +87,6 @@ export type RowCellIdentifiers = {
   rowKey: RowKey;
 } & CellIdentifier;
 
-export type SelectionPayload = {
-  ctrl?: boolean;
-} & RowCellIdentifiers;
-
 export type RangeItem = string;
 
 export type Range = [] | [RangeItem, RangeItem];
