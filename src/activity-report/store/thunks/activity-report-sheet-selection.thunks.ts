@@ -19,7 +19,7 @@ import {
   removeActivitiesThunk,
   submitReportsThunk,
   approveActivitiesThunk,
-  rejectrejectActivitiesThunk,
+  rejectActivitiesThunk,
 } from "./activity-report-sheet.thunks";
 
 export const submitSelectionThunk = createAsyncThunk(
@@ -62,26 +62,27 @@ export const endDragThunk = createAsyncThunk<
     mode,
   };
   dispatch(ActivityReportSelectionActions.endDrag(endDragPayload));
-  const selection = Array.from(
-    getState().activityReportSelection.selection[activityReportId]
-  );
-  const toUnselect: Selection = { [activityReportId]: [] };
-  const toSelect: Selection = { [activityReportId]: [] };
 
-  const currentActivitiesEntities =
-    getState().activityReport.entities[activityReportId].entities;
+  const selection = getState().activityReportSelection.selection;
+  const toUnselect: Selection = {};
+  const toSelect: Selection = {};
 
-  for (const day of selection) {
-    const canSelect =
-      mode === SheetMode.EDITTING
-        ? !currentActivitiesEntities[day]
-        : mode === SheetMode.VALIDATING &&
-          (currentActivitiesEntities[day].status === SheetCellStatus.PENDING ||
-            currentActivitiesEntities[day].status === SheetCellStatus.REJECTED);
-    if (!canSelect) {
-      toUnselect[activityReportId].push(day);
-    } else {
-      toSelect[activityReportId].push(day);
+  for (const key in selection) {
+    const entities = getState().activityReport.entities[key].entities;
+    for (const day of selection[key]) {
+      const canSelect =
+        mode === SheetMode.EDITTING
+          ? !entities[day]
+          : mode === SheetMode.VALIDATING &&
+            (entities[day].status === SheetCellStatus.PENDING ||
+              entities[day].status === SheetCellStatus.REJECTED);
+      if (!canSelect) {
+        if (!toUnselect[key]) toUnselect[key] = [];
+        toUnselect[key].push(day);
+      } else {
+        if (!toSelect[key]) toSelect[key] = [];
+        toSelect[key].push(day);
+      }
     }
   }
   console.log({
