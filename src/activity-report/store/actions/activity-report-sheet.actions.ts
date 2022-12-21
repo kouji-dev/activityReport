@@ -77,7 +77,7 @@ export const rejectActivitiesAction: RejectActivitiesAction = (
       if (!activityReport.entities[day]) {
         throw new Error(`Cannot reject an undeclared activity of ${day}`);
       } else {
-        activityReport.entities[day].status = SheetCellStatus.REJECT;
+        activityReport.entities[day].status = SheetCellStatus.REJECTED;
       }
     }
   }

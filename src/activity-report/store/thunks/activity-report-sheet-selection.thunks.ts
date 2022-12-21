@@ -82,6 +82,10 @@ export const endDragThunk = createAsyncThunk<
       toSelect[activityReportId].push(day);
     }
   }
+  console.log({
+    toSelect,
+    toUnselect,
+  });
   if (mode === SheetMode.EDITTING) {
     await dispatch(removeActivitiesThunk(toUnselect));
     await dispatch(declareSelectionThunk(toSelect));
