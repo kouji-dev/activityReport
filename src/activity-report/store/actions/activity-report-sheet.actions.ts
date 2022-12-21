@@ -82,3 +82,30 @@ export const rejectActivitiesAction: RejectActivitiesAction = (
     }
   }
 };
+
+export type ToggleActivitisStatusPayload = Selection;
+type ToggleActivitisStatusAction = CaseReducer<
+  ActivityReportSheetState,
+  PayloadAction<ToggleActivitisStatusPayload>
+>;
+export const toggleActivitisStatusAction: ToggleActivitisStatusAction = (
+  state,
+  action
+) => {
+  const selection = action.payload;
+  
+  const getFirstStatus = ()
+
+  for (const activityReportId in selection) {
+    const activityReport = state.entities[activityReportId];
+    const activities = selection[activityReportId];
+    
+    for (const day of activities) {
+      if (!activityReport.entities[day]) {
+        throw new Error(`Cannot reject an undeclared activity of ${day}`);
+      } else {
+        activityReport.entities[day].status = SheetCellStatus.REJECTED;
+      }
+    }
+  }
+};

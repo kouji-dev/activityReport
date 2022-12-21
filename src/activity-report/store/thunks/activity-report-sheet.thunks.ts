@@ -99,3 +99,13 @@ export const rejectActivitiesThunk = createAsyncThunk<
   const rejectActivitiesPayload: RejectActivitiesPayload = payload;
   dispatch(ActivityReportActions.rejectActivities(rejectActivitiesPayload));
 });
+
+type ToggleActivitisStatusThunkReturn = void;
+type ToggleActivitisStatusThunkPayload = Selection;
+export const toggleActivitisStatusThunk = createAsyncThunk<
+  ToggleActivitisStatusThunkReturn,
+  ToggleActivitisStatusThunkPayload
+>(`${namespace}/toggleActivitisStatusThunk`, async (payload, { dispatch }) => {
+  const toggleActivitisStatusPayload: ToggleActivitisStatusPayload = payload;
+  dispatch(ActivityReportActions.toggleActivitisStatus(toggleActivitisStatusPayload));
+});

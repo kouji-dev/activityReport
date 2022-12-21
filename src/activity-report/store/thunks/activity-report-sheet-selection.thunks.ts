@@ -64,7 +64,9 @@ export const endDragThunk = createAsyncThunk<
   dispatch(ActivityReportSelectionActions.endDrag(endDragPayload));
 
   const selection = getState().activityReportSelection.selection;
-  const toUnselect: Selection = {};
+  
+  if (mode === SheetMode.EDITTING) {
+    const toUnselect: Selection = {};
   const toSelect: Selection = {};
 
   for (const key in selection) {
@@ -85,16 +87,10 @@ export const endDragThunk = createAsyncThunk<
       }
     }
   }
-  console.log({
-    toSelect,
-    toUnselect,
-  });
-  if (mode === SheetMode.EDITTING) {
-    await dispatch(removeActivitiesThunk(toUnselect));
+  await dispatch(removeActivitiesThunk(toUnselect));
     await dispatch(declareSelectionThunk(toSelect));
   } else if (mode === SheetMode.VALIDATING) {
-    await dispatch(approveActivitiesThunk(toSelect));
-    await dispatch(rejectActivitiesThunk(toUnselect));
+    await dispatch(toggleActivitisStatusThunk(selection));
   }
   dispatch(ActivityReportSelectionActions.deselectAll());
 });
