@@ -46,10 +46,12 @@ export const endDragThunk = createAsyncThunk<
   const currentState = getState().activityReport;
   const endDragPayload: EndDragPayload = {
     ...payload,
-    existingCells: currentState.entities[activityReportId].ids,
+    existingCells: new Set<Id>(currentState.entities[activityReportId].ids),
     mode: currentState.mode,
   };
   dispatch(ActivityReportSelectionActions.endDrag(endDragPayload));
+  const currentSelection = getState()
+  dispatch(createOrRemoveCellsThunk({activityReportId}))
 });
 
 type OnSelectingThunkReturn = void;
