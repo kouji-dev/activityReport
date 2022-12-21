@@ -18,6 +18,8 @@ import {
   declareSelectionThunk,
   removeActivitiesThunk,
   submitReportsThunk,
+  approveActivitiesThunk,
+  rejectrejectActivitiesThunk
 } from "./activity-report-sheet.thunks";
 
 export const submitSelectionThunk = createAsyncThunk(
