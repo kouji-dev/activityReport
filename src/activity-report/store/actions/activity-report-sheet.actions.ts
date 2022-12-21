@@ -4,6 +4,7 @@ import {
   Selection,
   SheetCellStatus,
 } from "activity-report/timesheet/common-types";
+import { Id } from "utils/types";
 import { ActivityReportSheetState } from "../activity-report-sheet.state";
 
 export type RemoveActivitiesPayload = Selection;
@@ -93,18 +94,54 @@ export const toggleActivitisStatusAction: ToggleActivitisStatusAction = (
   action
 ) => {
   const selection = action.payload;
+
+  const getFirstStatus = (s: Set<Id>, key: Id) => {
+    const day = s.values().next().value;
+    return state.entities[key].entities[day].status || SheetCellStatus.PENDING;
+  };
+
+  const toggleStatus = (status: SheetCellStatus) => {
+    switch (status) {
+      case SheetCellStatus.PENDING:
+        return SheetCellStatus.APPROVED;
+      case SheetCellStatus.APPROVED:
+        return SheetCellStatus.REJECTED;
+      case SheetCellStatus.REJECTED:
+        return SheetCellStatus.APPROVED;
+    }
+  };
   
-  const getFirstStatus = ()
+  const hasAllSameStatus = (selection: Set<Id>, activityReportId: Id) => {
+    let status;
+    for(const day of selection) {
+      if(!status) {
+        status = state.entities[activityReportId].entities[day].status;
+        continue;
+      }
+      if(state.entities[activityReportId].entities[day].status != status) return false;
+    }
+    
+    return true;
+  }
 
   for (const activityReportId in selection) {
     const activityReport = state.entities[activityReportId];
     const activities = selection[activityReportId];
-    
+    let status: SheetCellStatus;
+    const allHasSameStatus = hasAllSameStatus(activities, activityReportId);
     for (const day of activities) {
       if (!activityReport.entities[day]) {
         throw new Error(`Cannot reject an undeclared activity of ${day}`);
       } else {
-        activityReport.entities[day].status = SheetCellStatus.REJECTED;
+        if (!status) {
+          const firstStatus = getFirstStatus(
+            selection[activityReportId],
+            activityReportId
+          );
+          console.log({ firstStatus });
+          status = allHasSameStatus ? toggleStatus(firstStatus) : firstStatus;
+        }
+        activityReport.entities[day].status = status;
       }
     }
   }

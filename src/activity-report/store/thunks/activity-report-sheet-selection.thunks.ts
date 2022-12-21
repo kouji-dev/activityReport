@@ -18,8 +18,7 @@ import {
   declareSelectionThunk,
   removeActivitiesThunk,
   submitReportsThunk,
-  approveActivitiesThunk,
-  rejectActivitiesThunk,
+  toggleActivitisStatusThunk,
 } from "./activity-report-sheet.thunks";
 
 export const submitSelectionThunk = createAsyncThunk(
@@ -64,30 +63,30 @@ export const endDragThunk = createAsyncThunk<
   dispatch(ActivityReportSelectionActions.endDrag(endDragPayload));
 
   const selection = getState().activityReportSelection.selection;
-  
+
   if (mode === SheetMode.EDITTING) {
     const toUnselect: Selection = {};
-  const toSelect: Selection = {};
+    const toSelect: Selection = {};
 
-  for (const key in selection) {
-    const entities = getState().activityReport.entities[key].entities;
-    for (const day of selection[key]) {
-      const canSelect =
-        mode === SheetMode.EDITTING
-          ? !entities[day]
-          : mode === SheetMode.VALIDATING &&
-            (entities[day].status === SheetCellStatus.PENDING ||
-              entities[day].status === SheetCellStatus.REJECTED);
-      if (!canSelect) {
-        if (!toUnselect[key]) toUnselect[key] = [];
-        toUnselect[key].push(day);
-      } else {
-        if (!toSelect[key]) toSelect[key] = [];
-        toSelect[key].push(day);
+    for (const key in selection) {
+      const entities = getState().activityReport.entities[key].entities;
+      for (const day of selection[key]) {
+        const canSelect =
+          mode === SheetMode.EDITTING
+            ? !entities[day]
+            : mode === SheetMode.VALIDATING &&
+              (entities[day].status === SheetCellStatus.PENDING ||
+                entities[day].status === SheetCellStatus.REJECTED);
+        if (!canSelect) {
+          if (!toUnselect[key]) toUnselect[key] = [];
+          toUnselect[key].push(day);
+        } else {
+          if (!toSelect[key]) toSelect[key] = [];
+          toSelect[key].push(day);
+        }
       }
     }
-  }
-  await dispatch(removeActivitiesThunk(toUnselect));
+    await dispatch(removeActivitiesThunk(toUnselect));
     await dispatch(declareSelectionThunk(toSelect));
   } else if (mode === SheetMode.VALIDATING) {
     await dispatch(toggleActivitisStatusThunk(selection));
