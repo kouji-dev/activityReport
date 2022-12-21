@@ -85,20 +85,17 @@ export const approveActivitiesThunk = createAsyncThunk<
   ApproveActivitiesThunkReturn,
   ApproveActivitiesThunkPayload
 >(`${namespace}/approveActivitiesThunk`, async (payload, { dispatch }) => {
-  const approveActivitiesPayload: ApproveActivitiesPayload = {
-    ...payload,
-  };
+  const approveActivitiesPayload: ApproveActivitiesPayload = payload;
+  console.log({ payload });
   dispatch(ActivityReportActions.approveActivities(approveActivitiesPayload));
 });
 
 type RejectActivitiesThunkReturn = void;
 type RejectActivitiesThunkPayload = Selection;
 export const rejectActivitiesThunk = createAsyncThunk<
-  ApproveActivitiesThunkReturn,
-  ApproveActivitiesThunkPayload
+  RejectActivitiesThunkReturn,
+  RejectActivitiesThunkPayload
 >(`${namespace}/rejectActivitiesThunk`, async (payload, { dispatch }) => {
-  const approveActivitiesPayload: RejectActivitiesPayload = {
-    ...payload,
-  };
-  dispatch(ActivityReportActions.rejectActivities(approveActivitiesPayload));
+  const rejectActivitiesPayload: RejectActivitiesPayload = payload;
+  dispatch(ActivityReportActions.rejectActivities(rejectActivitiesPayload));
 });

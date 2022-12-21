@@ -19,7 +19,7 @@ import {
   removeActivitiesThunk,
   submitReportsThunk,
   approveActivitiesThunk,
-  rejectrejectActivitiesThunk
+  rejectrejectActivitiesThunk,
 } from "./activity-report-sheet.thunks";
 
 export const submitSelectionThunk = createAsyncThunk(
@@ -92,8 +92,8 @@ export const endDragThunk = createAsyncThunk<
     await dispatch(removeActivitiesThunk(toUnselect));
     await dispatch(declareSelectionThunk(toSelect));
   } else if (mode === SheetMode.VALIDATING) {
-    await dispatch(approveActivitiesThunk(toUnselect));
-    await dispatch(rejectActivitiesThunk(toSelect));
+    await dispatch(approveActivitiesThunk(toSelect));
+    await dispatch(rejectActivitiesThunk(toUnselect));
   }
   dispatch(ActivityReportSelectionActions.deselectAll());
 });
