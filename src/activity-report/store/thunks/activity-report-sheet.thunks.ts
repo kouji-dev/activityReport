@@ -2,7 +2,9 @@ import { Selection } from "activity-report/timesheet/common-types";
 import { fromServerFormat, getSheetColumns } from "utils/date-utils";
 import { createAsyncThunk } from "utils/store-utils";
 import { Id } from "utils/types";
+import { RemoveActivitiesPayload } from "../actions/activity-report-sheet.actions";
 import { ActivityReportSelectionActions } from "../activity-report-sheet-selection.state";
+import { ActivityReportActions } from "../activity-report-sheet.state";
 
 const namespace = "activity-report";
 
@@ -35,7 +37,7 @@ export const declareAllThunk = createAsyncThunk(
         [activityReportId]: new Set<string>(),
       };
       for (const col of columns) {
-        keys[activityReportId].add(col.day);
+        (keys[activityReportId] as Set<string>).add(col.day);
       }
       resolve(keys);
     });
@@ -44,12 +46,14 @@ export const declareAllThunk = createAsyncThunk(
   }
 );
 
-export const declareSelectionThunk = createAsyncThunk(
-  `${namespace}/declareSelection`,
-  async (keys: Selection) => {
-    return Promise.resolve(keys);
-  }
-);
+type DeclareSelectionThunkReturn = Promise<Selection>;
+type DeclareSelectionThunkPayload = Selection;
+export const declareSelectionThunk = createAsyncThunk<
+  DeclareSelectionThunkReturn,
+  DeclareSelectionThunkPayload
+>(`${namespace}/declareSelectionThunk`, async (keys: Selection) => {
+  return Promise.resolve(keys);
+});
 
 export const undeclareAllThunk = createAsyncThunk(
   `${namespace}/undeclareAll`,
@@ -58,3 +62,39 @@ export const undeclareAllThunk = createAsyncThunk(
     return activityReportId;
   }
 );
+
+type RemoveActivitiesThunkReturn = void;
+type RemoveActivitiesThunkPayload = Selection;
+export const removeActivitiesThunk = createAsyncThunk<
+  RemoveActivitiesThunkReturn,
+  RemoveActivitiesThunkPayload
+>(`${namespace}/removeActivitiesThunk`, async (payload, { dispatch }) => {
+  const removeActivitiesPayload: RemoveActivitiesPayload = {
+    ...payload,
+  };
+  dispatch(ActivityReportActions.removeActivities(removeActivitiesPayload));
+});
+
+type ApproveActivitiesThunkReturn = void;
+type ApproveActivitiesThunkPayload = Selection;
+export const approveActivitiesThunk = createAsyncThunk<
+  ApproveActivitiesThunkReturn,
+  ApproveActivitiesThunkPayload
+>(`${namespace}/approveActivitiesThunk`, async (payload, { dispatch }) => {
+  const approveActivitiesPayload: ApproveActivitiesPayload = {
+    ...payload,
+  };
+  dispatch(ActivityReportActions.approveActivities(removeActivitiesPayload));
+});
+
+type RejectActivitiesThunkReturn = void;
+type RejectActivitiesThunkPayload = Selection;
+export const rejectActivitiesThunk = createAsyncThunk<
+  ApproveActivitiesThunkReturn,
+  ApproveActivitiesThunkPayload
+>(`${namespace}/rejectActivitiesThunk`, async (payload, { dispatch }) => {
+  const approveActivitiesPayload: RejectActivitiesPayload = {
+    ...payload,
+  };
+  dispatch(ActivityReportActions.rejectActivities(approveActivitiesPayload));
+});

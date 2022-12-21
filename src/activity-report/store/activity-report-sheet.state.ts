@@ -24,6 +24,7 @@ import {
 import { Id } from "utils/types";
 import { toServerFormat } from "utils/date-utils";
 import moment from "moment";
+import { removeActivitiesAction } from "./actions/activity-report-sheet.actions";
 
 export const namespace = `activity-report`;
 
@@ -56,6 +57,7 @@ export const activityReportState = createSlice({
     ) => {
       state.mode = action.payload;
     },
+    removeActivities: removeActivitiesAction,
   },
   extraReducers: (builder) => {
     builder
@@ -79,7 +81,7 @@ export const activityReportState = createSlice({
             }
             activityReport.meta.submissionDate = toServerFormat(moment());
 
-            for (const day of keys[activityReportId].values()) {
+            for (const day of keys[activityReportId]) {
               if (!activityReport.entities[day]) {
                 activityReport.ids.push(day);
                 activityReport.entities[day] = {
