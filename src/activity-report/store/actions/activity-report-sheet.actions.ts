@@ -110,37 +110,37 @@ export const toggleActivitisStatusAction: ToggleActivitisStatusAction = (
         return SheetCellStatus.APPROVED;
     }
   };
-  
+
   const hasAllSameStatus = (selection: Set<Id>, activityReportId: Id) => {
     let status;
-    for(const day of selection) {
-      if(!status) {
+    for (const day of selection) {
+      if (!status) {
         status = state.entities[activityReportId].entities[day].status;
         continue;
       }
-      if(state.entities[activityReportId].entities[day].status != status) return false;
+      if (state.entities[activityReportId].entities[day].status != status)
+        return false;
     }
-    
+
     return true;
-  }
+  };
 
   for (const activityReportId in selection) {
     const activityReport = state.entities[activityReportId];
     const activities = selection[activityReportId];
-    let status: SheetCellStatus;
     const allHasSameStatus = hasAllSameStatus(activities, activityReportId);
+    const firstStatus = getFirstStatus(
+      selection[activityReportId],
+      activityReportId
+    );
+    const status: SheetCellStatus = allHasSameStatus
+      ? toggleStatus(firstStatus)
+      : firstStatus;
+
     for (const day of activities) {
       if (!activityReport.entities[day]) {
         throw new Error(`Cannot reject an undeclared activity of ${day}`);
       } else {
-        if (!status) {
-          const firstStatus = getFirstStatus(
-            selection[activityReportId],
-            activityReportId
-          );
-          console.log({ firstStatus });
-          status = allHasSameStatus ? toggleStatus(firstStatus) : firstStatus;
-        }
         activityReport.entities[day].status = status;
       }
     }
