@@ -24,7 +24,7 @@ import {
 import { Id } from "utils/types";
 import { toServerFormat } from "utils/date-utils";
 import moment from "moment";
-import { removeActivitiesAction } from "./actions/activity-report-sheet.actions";
+import { approveActivitiesAction, rejectActivitiesAction, removeActivitiesAction } from "./actions/activity-report-sheet.actions";
 
 export const namespace = `activity-report`;
 
@@ -58,6 +58,8 @@ export const activityReportState = createSlice({
       state.mode = action.payload;
     },
     removeActivities: removeActivitiesAction,
+    approveActivities: approveActivitiesAction,
+    rejectActivities: rejectActivitiesAction,
   },
   extraReducers: (builder) => {
     builder

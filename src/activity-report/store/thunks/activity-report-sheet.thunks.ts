@@ -2,7 +2,11 @@ import { Selection } from "activity-report/timesheet/common-types";
 import { fromServerFormat, getSheetColumns } from "utils/date-utils";
 import { createAsyncThunk } from "utils/store-utils";
 import { Id } from "utils/types";
-import { RemoveActivitiesPayload } from "../actions/activity-report-sheet.actions";
+import {
+  ApproveActivitiesPayload,
+  RejectActivitiesPayload,
+  RemoveActivitiesPayload,
+} from "../actions/activity-report-sheet.actions";
 import { ActivityReportSelectionActions } from "../activity-report-sheet-selection.state";
 import { ActivityReportActions } from "../activity-report-sheet.state";
 
@@ -84,7 +88,7 @@ export const approveActivitiesThunk = createAsyncThunk<
   const approveActivitiesPayload: ApproveActivitiesPayload = {
     ...payload,
   };
-  dispatch(ActivityReportActions.approveActivities(removeActivitiesPayload));
+  dispatch(ActivityReportActions.approveActivities(approveActivitiesPayload));
 });
 
 type RejectActivitiesThunkReturn = void;
