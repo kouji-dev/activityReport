@@ -133,9 +133,10 @@ export const toggleActivitisStatusAction: ToggleActivitisStatusAction = (
       selection[activityReportId],
       activityReportId
     );
-    const status: SheetCellStatus = allHasSameStatus
-      ? toggleStatus(firstStatus)
-      : firstStatus;
+    const status: SheetCellStatus =
+      allHasSameStatus || firstStatus === SheetCellStatus.PENDING
+        ? toggleStatus(firstStatus)
+        : firstStatus;
 
     for (const day of activities) {
       if (!activityReport.entities[day]) {

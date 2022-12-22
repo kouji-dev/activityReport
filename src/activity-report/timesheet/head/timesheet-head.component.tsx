@@ -10,7 +10,6 @@ export interface HeadCol {
   day: string;
   isWeekend?: boolean;
   isHoliday?: boolean;
-  isDisabled?: boolean;
 }
 
 export type HeadCols = HeadCol[];

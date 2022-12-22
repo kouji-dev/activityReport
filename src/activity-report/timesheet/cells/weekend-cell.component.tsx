@@ -12,7 +12,7 @@ const CellPointerListener = WithCancalableSelectionPointer(() => (
 interface Props extends CancelableSelectionPointerProps {}
 
 export const WeekendCell: FC<Props> = memo((props) => {
-  const className = cls("cell", "cell-disabled");
+  const className = cls("cell", "cell-weekend");
   return <CellPointerListener {...props} className={className} />;
 });
 

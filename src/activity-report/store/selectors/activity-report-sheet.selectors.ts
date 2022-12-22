@@ -85,13 +85,19 @@ export const hasActivitySelector =
       activityReportId,
       day
     );
+export const isDisabledActivitySelector =
+  (activityReportId: Id, day: string) => (state: IRootState) =>
+    createSelector(
+      [hasActivitySelector(activityReportId, day), isSheetModeEditSelector],
+      (hasActivity, isEditable) => !hasActivity && !isEditable
+    )(state, activityReportId, day);
 
 export const canSelect =
   (activityReportId: Id, day: string) => (state: IRootState) =>
     createSelector(
       [hasActivitySelector(activityReportId, day), sheetModeSelector],
       (hasCell: boolean, sheetMode: SheetMode) =>
-        (sheetMode === SheetMode.EDITTING) || hasCell
+        sheetMode === SheetMode.EDITTING || hasCell
     )(state, activityReportId, day);
 
 export const activityStatusSelector =
