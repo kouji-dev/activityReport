@@ -11,7 +11,7 @@ interface Props {
 }
 export const TimesheetCellToolbox: FC<Props> = (props) => {
   const { activityReportId } = props;
-  const rootCls = "toolbox-cell";
+  const rootCls = "td toolbox-cell";
   const sheetMode: SheetMode = useSelector(sheetModeSelector);
 
   let content;
@@ -26,9 +26,5 @@ export const TimesheetCellToolbox: FC<Props> = (props) => {
     default:
       content = <></>;
   }
-  return (
-    <td colSpan={1} className={rootCls}>
-      {content}
-    </td>
-  );
+  return <div className={rootCls}>{content}</div>;
 };

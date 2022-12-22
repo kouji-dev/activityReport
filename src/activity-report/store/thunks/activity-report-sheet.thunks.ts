@@ -109,3 +109,13 @@ export const toggleActivitisStatusThunk = createAsyncThunk<
   const toggleActivitisStatusPayload: ToggleActivitisStatusPayload = payload;
   dispatch(ActivityReportActions.toggleActivitisStatus(toggleActivitisStatusPayload));
 });
+
+type ApproveAllThunkReturn = void;
+type ApproveAllThunkPayload = Id;
+export const approveAllThunk = createAsyncThunk<
+  ApproveAllThunkReturn,
+  ApproveAllThunkPayload
+>(`${namespace}/toggleActivitisStatusThunk`, async (payload, { dispatch }) => {
+  const approveAllPayload: ApproveAllPayload = payload;
+  dispatch(ActivityReportActions.approveAll(approveAllPayload));
+});

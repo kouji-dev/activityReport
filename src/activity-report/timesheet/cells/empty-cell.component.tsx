@@ -18,7 +18,7 @@ const CellPointerListener = WithCancalableSelectionPointer(
 interface Props extends CancelableSelectionPointerProps {}
 
 export const EmptyCell: FC<Props> = memo((props) => {
-  const className = cls("cell", "cell-empty");
+  const className = cls("td", "cell-empty");
   return <CellPointerListener {...props} className={className} />;
 });
 

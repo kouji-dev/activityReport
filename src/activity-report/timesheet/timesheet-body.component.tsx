@@ -7,9 +7,9 @@ import { TimesheetRow } from "./row/timesheet-row.component";
 import { FixedSizeList, ListChildComponentProps } from "react-window";
 
 const VirtualRow = (props: ListChildComponentProps) => {
-  const { data, index } = props;
+  const { data, index, style } = props;
   const activityReportId = data[index];
-  return <TimesheetRow activityReportId={activityReportId} />;
+  return <TimesheetRow style={style} activityReportId={activityReportId} />;
 };
 
 interface Props {}
@@ -21,11 +21,13 @@ export const TimesheetBody: FC<Props> = (props) => {
 
   return (
     <FixedSizeList
-      height={400}
+      className="tbody"
+      height={500}
       width="100%"
-      itemSize={10}
+      itemSize={35}
       itemData={activityReports}
       itemCount={activityReports.length}
+      overscanCount={4}
     >
       {VirtualRow}
     </FixedSizeList>

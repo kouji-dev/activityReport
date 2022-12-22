@@ -8,15 +8,23 @@ type TimehseetToolboxCellApi = {
   undeclareAll: (activityReportId: Id) => void;
 };
 
-export const useTimesheetToolboxCell: () => TimehseetToolboxCellApi = () => {
+export const useTimesheetToolboxCell: (activityReportId: Id) => TimehseetToolboxCellApi = (activityReportId: Id) => {
   const dispatch = useDispatch();
 
-  const declareAll = useCallback((activityReportId: Id) => {
+  const declareAll = useCallback(() => {
     dispatch(ActivityReportActions.declareAllThunk(activityReportId));
   }, []);
 
-  const undeclareAll = useCallback((activityReportId: Id) => {
+  const undeclareAll = useCallback(() => {
     dispatch(ActivityReportActions.undeclareAllThunk(activityReportId));
+  }, []);
+  
+  const approveAll = useCallback(() => {
+    dispatch(approveAllThunk(activityReportId));
+  }, []);
+
+  const rejectAll = useCallback(() => {
+    dispatch(rejectAllThunk(activityReportId));
   }, []);
 
   const api: TimehseetToolboxCellApi = useMemo(

@@ -1,8 +1,4 @@
-import {
-  CheckCircleTwoTone,
-  CloseCircleTwoTone,
-  SettingTwoTone,
-} from "@ant-design/icons";
+import { CloseCircleTwoTone, SettingTwoTone } from "@ant-design/icons";
 import { useTimesheetTableHeadToolboxCell } from "activity-report/hooks/use-timesheet-table-head-toolbox.hook";
 import { Button, Popover, Space, Tooltip, Typography } from "antd";
 import { FC } from "react";
@@ -17,20 +13,20 @@ export const Th: FC<Props> = (props) => {
   const DD = date.format("DD");
 
   return (
-    <th>
-      <Typography.Text disabled={isHoliday || isWeekend} className="head">
+    <div className="th">
+      <Typography.Text disabled={isHoliday || isWeekend} className="date">
         <small>{dd}</small>
         <b>{DD}</b>
       </Typography.Text>
-    </th>
+    </div>
   );
 };
 
 export const ThProject: FC<{}> = () => {
   return (
-    <th colSpan={1} className="head-project">
+    <div className="th th-project">
       <b>Projects</b>
-    </th>
+    </div>
   );
 };
 
@@ -45,12 +41,12 @@ export const TableHeadToolbox: FC<{}> = () => {
   );
 
   return (
-    <th className="toolbox-head">
+    <div className="th toolbox-head">
       <Popover content={content}>
         <div className="head-empty">
           <SettingTwoTone />
         </div>
       </Popover>
-    </th>
+    </div>
   );
 };

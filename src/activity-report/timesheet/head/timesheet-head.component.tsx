@@ -18,11 +18,11 @@ export const TimesheetHead: FC<Props> = memo((props) => {
   const columns = useSheetColumns();
 
   return (
-    <div className='head-container'>
+    <div className="thead">
       <ThProject />
-          {columns.map((col: HeadCol, key) => (
-            <Th key={key} {...col} />
-          ))}
+      {columns.map((col: HeadCol, key) => (
+        <Th key={key} {...col} />
+      ))}
       <TableHeadToolbox />
     </div>
   );

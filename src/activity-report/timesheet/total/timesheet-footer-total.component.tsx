@@ -7,14 +7,12 @@ export const TimesheetFooterTotal = () => {
   const columns = useSheetColumns();
 
   return (
-    <tfoot>
-      <tr>
-        <td colSpan={3}>Total</td>
-        {columns.map((col: HeadCol, key) => (
-          <TimesheetColumnTotal key={key} {...col} />
-        ))}
-        <TimesheetTotal />
-      </tr>
-    </tfoot>
+    <div className="tfoot">
+      <div className="tf">Total</div>
+      {columns.map((col: HeadCol, key) => (
+        <TimesheetColumnTotal key={key} {...col} />
+      ))}
+      <TimesheetTotal />
+    </div>
   );
 };

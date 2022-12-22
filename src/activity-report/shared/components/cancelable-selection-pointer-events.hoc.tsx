@@ -29,13 +29,14 @@ export const WithCancalableSelectionPointer =
     const { startDrag, onSelecting, endDrag, isHolidingCtrl } =
       useTimesheetSelectionApi(payload);
 
-    const rootCls = "cell";
+    const rootCls = "selection-layer";
 
     const handleCtrl = (ev: any) => {
       isHolidingCtrl(ev.ctrlKey);
     };
 
     const onPointerDown: PointerEventHandler<HTMLDivElement> = (ev) => {
+      console.log(ev);
       handleCtrl(ev);
       if (hasClass(ev, rootCls)) {
         startDrag();
@@ -56,7 +57,7 @@ export const WithCancalableSelectionPointer =
     };
 
     const onPointerUp: PointerEventHandler<HTMLDivElement> = (ev) => {
-      console.log("up");
+      console.log(ev);
       onCancel(ev);
     };
     const onPointerCancel: PointerEventHandler<HTMLDivElement> = (ev) => {

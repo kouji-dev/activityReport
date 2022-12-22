@@ -24,13 +24,13 @@ export const TimesheetCellSelectionLayer: FC<Props> = memo((props) => {
   );
   const status = useSelector(activityStatusSelector(activityReportId, day));
 
-  const rootCls = "cell-selection-layer";
+  const rootCls = "selection-layer";
   const className = cls(rootCls, {
-    "cell-in-range": selecting && !selected,
-    "cell-selected": selected,
-    "cell-approved": status == SheetCellStatus.APPROVED,
-    "cell-pending": status == SheetCellStatus.PENDING,
-    "cell-rejected": status == SheetCellStatus.REJECTED,
+    "td-in-range": selecting && !selected,
+    "td-selected": selected,
+    "td-approved": status == SheetCellStatus.APPROVED,
+    "td-pending": status == SheetCellStatus.PENDING,
+    "td-rejected": status == SheetCellStatus.REJECTED,
   });
 
   const content = <div className={className} />;

@@ -10,14 +10,14 @@ interface Props {
 
 export const SelectionToolboxCell: FC<Props> = (props) => {
   const { activityReportId } = props;
-  const { undeclareAll, declareAll } = useTimesheetToolboxCell();
+  const { undeclareAll, declareAll } = useTimesheetToolboxCell(activityReportId);
 
   const onDeclareAll = useCallback(() => {
-    declareAll(activityReportId);
+    declareAll();
   }, []);
 
   const onUnDeclareAll = useCallback(() => {
-    undeclareAll(activityReportId);
+    undeclareAll();
   }, []);
 
   return (

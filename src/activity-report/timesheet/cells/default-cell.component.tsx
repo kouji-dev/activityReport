@@ -30,7 +30,7 @@ interface Props extends CancelableSelectionPointerProps {}
 
 export const DefaultCell: FC<Props> = memo((props) => {
   const { activityReportId, day } = props;
-  const className = cls("cell");
+  const className = cls("td");
   const hasCell = useSelector(hasActivitySelector(activityReportId, day));
   const isDisabled = useSelector(
     isDisabledActivitySelector(activityReportId, day)
