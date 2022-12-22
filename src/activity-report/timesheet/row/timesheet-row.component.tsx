@@ -41,7 +41,7 @@ export const ProjectTD: FC<{ activityReportId: Id }> = memo((props) => {
 
   const { nom } = project;
   return (
-    <td className="context-cell">
+    <td colSpan={1} className="context-cell">
       <Typography.Text strong>{nom}</Typography.Text>
     </td>
   );

@@ -1,9 +1,16 @@
 import { FC } from "react";
 import { useSelector } from "react-redux";
-import { IRootState } from "../../store";
-import { Id } from "../../utils/types";
+import { IRootState } from "store";
+import { Id } from "utils/types";
 import { activityReportIdsSelector } from "../store/selectors/activity-report-sheet.selectors";
 import { TimesheetRow } from "./row/timesheet-row.component";
+import { FixedSizeList, ListChildComponentProps } from "react-window";
+
+const VirtualRow = (props: ListChildComponentProps) => {
+  const { data, index } = props;
+  const activityReportId = data[index];
+  return <TimesheetRow activityReportId={activityReportId} />;
+};
 
 interface Props {}
 
@@ -13,13 +20,14 @@ export const TimesheetBody: FC<Props> = (props) => {
   );
 
   return (
-    <tbody>
-      {activityReports.map((activityReportId) => (
-        <TimesheetRow
-          key={activityReportId}
-          activityReportId={activityReportId}
-        />
-      ))}
-    </tbody>
+    <FixedSizeList
+      height={400}
+      width="100%"
+      itemSize={10}
+      itemData={activityReports}
+      itemCount={activityReports.length}
+    >
+      {VirtualRow}
+    </FixedSizeList>
   );
 };

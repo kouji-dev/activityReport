@@ -1,5 +1,5 @@
 :root {
-  --cell-width: 30px;
+  --cell-width: 50;
   --cell-max-width: 30px;
   --cell-border-radius: 5px;
   --timesheet-border-color: #f5f5f5;
@@ -11,48 +11,65 @@
   background-color: #f5f5f5;
 }
 
-table {
-  background-color: white;
-  border-radius: 8px;
-  border-spacing: 2px;
-    border-collapse: separate;
-  th {
-    min-width: var(--cell-width);
-    height: 36px;
-    & > .head,
-    & > .head-project, & > .head-empty {
-      display: flex;
-      flex-flow: column;
-      justify-content: center;
-      height: 100%;
-      border: 1px solid var(--timesheet-border-color);
-    }
-    & > .head {
-      max-width: var(--cell-max-width);
-    }
-  }
+.table-container {
+  display: flex;
+  flex-direction: column;
   
-  tr {
+  table {
+    background-color: white;
+    border-radius: 8px;
+    border-spacing: 2px;
+    border-collapse: separate;
+    table-layout: fixed;
+    
+    th {
+      height: 36px;
+      & > .head,
+      & > .head-project, & > .head-empty {
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+        border: 1px solid var(--timesheet-border-color);
+      }
+    }
+    
+    .head-project {
+        width: calc(var(--cell-width) * 4px)
+    }
     .context-cell {
-      padding: 2px 8px;
+        width: calc(var(--cell-width) * 1px)
     }
-  }
-  td {
-    position: relative;
-    text-align: center;
-    border: 1px solid #f0f0f0;
-    border-radius: var(--cell-border-radius);
-  }
-
-  th,
-  td {
-    user-select: none;
-  }
-  tfoot {
+    .toolbox-cell {
+      width: calc(var(--cell-width) * 1px)
+    }
+    .toolbox-head {
+       width: calc(var(--cell-width) * 1px)
+    }
+    .total-row {
+      width: calc(var(--cell-width) * 1px)
+    }
+    .cell {
+       width: calc(var(--cell-width) * 1px)
+    }
     td {
-      padding: 6px;
+      position: relative;
+      text-align: center;
+      border: 1px solid #f0f0f0;
+      border-radius: var(--cell-border-radius);
     }
-  }
+
+    th,
+    td {
+      user-select: none;
+    }
+    tfoot {
+      td {
+        padding: 6px;
+      }
+    }
+  } 
 }
 
 td .ant-badge {

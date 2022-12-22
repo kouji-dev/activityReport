@@ -1,3 +1,4 @@
+import { Table } from "antd";
 import { Moment } from "moment";
 import { FC, memo } from "react";
 import { useSheetColumns } from "utils/date-utils";
@@ -18,14 +19,12 @@ export const TimesheetHead: FC<Props> = memo((props) => {
   const columns = useSheetColumns();
 
   return (
-    <thead>
-      <tr>
-        <ThProject />
-        {columns.map((col: HeadCol, key) => (
-          <Th key={key} {...col} />
-        ))}
-        <TableHeadToolbox />
-      </tr>
-    </thead>
+    <div className='head-container'>
+      <ThProject />
+          {columns.map((col: HeadCol, key) => (
+            <Th key={key} {...col} />
+          ))}
+      <TableHeadToolbox />
+    </div>
   );
 });

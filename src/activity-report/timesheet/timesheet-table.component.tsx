@@ -5,10 +5,10 @@ import { TimesheetFooterTotal } from "./total/timesheet-footer-total.component";
 
 export const TimesheetTable = memo(() => {
   return (
-    <table>
+    <div className="table-container">
       <TimesheetHead />
       <TimesheetBody />
       <TimesheetFooterTotal />
-    </table>
+    </div>
   );
 });

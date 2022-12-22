@@ -17,7 +17,7 @@ export const Th: FC<Props> = (props) => {
   const DD = date.format("DD");
 
   return (
-    <th colSpan={0}>
+    <th>
       <Typography.Text disabled={isHoliday || isWeekend} className="head">
         <small>{dd}</small>
         <b>{DD}</b>
@@ -28,10 +28,8 @@ export const Th: FC<Props> = (props) => {
 
 export const ThProject: FC<{}> = () => {
   return (
-    <th colSpan={3}>
-      <div className="head-project">
-        <b>Projects</b>
-      </div>
+    <th colSpan={1} className="head-project">
+      <b>Projects</b>
     </th>
   );
 };
@@ -47,7 +45,7 @@ export const TableHeadToolbox: FC<{}> = () => {
   );
 
   return (
-    <th colSpan={2}>
+    <th className="toolbox-head">
       <Popover content={content}>
         <div className="head-empty">
           <SettingTwoTone />
