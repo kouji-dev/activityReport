@@ -10,14 +10,14 @@
 -   Selection:
     -[y]   by range
     -[y]   by cell
-    -   toggling cell status
+    -[y]   toggling cell status
 -   Modes:
     -   edit:
         -[y]   declare/undeclare all
-        -   toggle already selected one
+        -[y]   toggle already selected one
     -   validate:
         -[y]   can select only pending/valid/rejected cells
-        -   selection does toggle cell status like (pending => valid, valid => rejected, rejected => valid)
+        -[y]   selection does toggle cell status like (pending => valid, valid => rejected, rejected => valid)
     -   print:
         -   read only
         -   export to pdf/svg
@@ -29,7 +29,7 @@
     -   activities by project: total of each col/day is 1
     -   activities by user: total is calculated based on each cell
 -   Submission:
-    -   submit only when the report is valid
+    -[y]   submit only when the report is valid
 -   Lock (NF):
     -   ensure no changes if the report is locked
 -   Toolbox (NF):
@@ -41,6 +41,6 @@
         -   bind all menu actions with shortcuts like (ctrl+A => select All)
     -   row:
         -   edit:
-            -   select/unselect all cells
+            -[y]   select/unselect all cells
         -   validate:
-            -   approve/reject all cells
+            -[y]   approve/reject all cells
