@@ -1,4 +1,4 @@
-import { faker } from '@faker-js/faker';
+import {faker} from '@faker-js/faker';
 
 export interface IProject {
   id: number;
@@ -14,4 +14,7 @@ export const fakeProject = (): IProject => {
   };
 
   return project;
+};
+export const fakeProjects = (p: number = 20) => {
+    return [...Array(p).keys()].map(() => fakeProject());
 };

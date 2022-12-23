@@ -1,4 +1,4 @@
-import { ActivityReport } from "activity-report/activity-report.component";
+import { ActivityReport } from "report/report.component";
 import { Provider } from "react-redux";
 import { store } from "./store";
 

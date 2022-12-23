@@ -17,7 +17,12 @@
     "jsx": "react-jsx",
     "baseUrl": "src",
     "paths": {
-      "@shared/*": ["shared/*"]
+      "@shared/*": ["shared/*"],
+      "@models/*": ["models/*"],
+      "@utils/*": ["utils/*"],
+      "@hooks/*": ["report/hooks/*"],
+      "@project/*": ["project/*"],
+      "@store/*": ["report/store/*"]
     }
   },
   "include": ["src"],

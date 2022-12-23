@@ -1,9 +1,9 @@
-import { activityReportMonthSelector } from "activity-report/store/selectors/activity-report-sheet.selectors";
-import { HeadCols } from "activity-report/timesheet/head/timesheet-head.component";
+import { HeadCols } from "report/table/head/head.component";
 import moment, { Moment } from "moment";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { holidaysSelectors } from "../holidays/holidays.selectors";
+import {reportMonthSelector} from "@store/selectors/report.selectors";
 
 export type Month = moment.Moment;
 
@@ -26,7 +26,7 @@ export const fromServerFormat = (date: any) => {
 };
 
 const baseDate = moment();
-export const getRandomDate = (month, year) => {
+export const getRandomDate = (month: number, year: number) => {
   const date = baseDate;
   const daysOfMonth = date.date();
   const day = Math.floor(Math.random() * daysOfMonth);
@@ -37,7 +37,7 @@ export const getRandomDate = (month, year) => {
 };
 
 export const useSheetColumns = () => {
-  const reportMonth = useSelector(activityReportMonthSelector);
+  const reportMonth = useSelector(reportMonthSelector);
   const date = fromServerFormat(reportMonth);
   const holidays: Array<number> = useSelector(holidaysSelectors);
   const month = date.month();
@@ -61,8 +61,7 @@ export const getSheetColumns = (date: Moment, holidays: number[]) => {
       date: startOfMonth.clone(),
       day: toServerFormat(startOfMonth),
       isWeekend: isWeekend(startOfMonth),
-      isHoliday: holidaysSet.has(startOfMonth.date()),
-      isDisabled: false,
+      isHoliday: holidaysSet.has(startOfMonth.date())
     });
     startOfMonth.add(1, "d");
   }

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "utils/store-utils";
-import { ActivityReportActions } from "../activity-report/store/activity-report-sheet.state";
+import { ReportActions } from "../report/store/report.state";
 import { getFakeProjects } from "../fakeData/fake-data";
 import { IProject } from "../models/project.model";
 import { Entity } from "../utils/types";
@@ -35,7 +35,7 @@ const fetchProjects = createAsyncThunk(
     return new Promise<ProjectState>((resolve) => {
       setTimeout(() => {
         const state = getFakeProjects();
-        dispatch(ActivityReportActions.fetchActivityReports(state.ids));
+        dispatch(ReportActions.fetchActivityReports(state.ids));
         resolve(state);
       }, Math.random() * 2500);
     });

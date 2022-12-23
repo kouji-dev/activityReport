@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import activityReport from "../activity-report/store/activity-report-sheet.state";
-import activityReportSelection from "../activity-report/store/activity-report-sheet-selection.state";
+import report from "../report/store/report.state";
+import reportSelection from "../report/store/report-selection.state";
 import project from "../project/project.state";
 import holidays from "../holidays/holidays.state";
 import { useDispatch as dispatch } from "react-redux";
@@ -13,9 +13,9 @@ export const store = configureStore({
     getDefaultMiddleware({ serializableCheck: false }),
   reducer: {
     project,
-    activityReport,
+    report,
     holidays,
-    activityReportSelection,
+    reportSelection,
   },
   devTools: {
     serialize: {

@@ -1,16 +1,16 @@
-import { Range } from "activity-report/timesheet/common-types";
+import { Range } from "report/table/common-types";
 import moment from "moment";
 import { fromServerFormat, toServerFormat } from "./date-utils";
 import { Id } from "./types";
 
-export const getKey = (activityReportId: Id, day: string) =>
-  `${activityReportId}||${day}`;
+export const getKey = (reportId: Id, day: string) =>
+  `${reportId}||${day}`;
 
-export const fromKey: (key: string) => { activityReportId: Id; day: string } = (
+export const fromKey: (key: string) => { reportId: Id; day: string } = (
   key: string
 ) => {
-  const [activityReportId, day] = key.split("||");
-  return { activityReportId, day };
+  const [reportId, day] = key.split("||");
+  return { reportId, day };
 };
 
 export const generateRangeKeys = (
