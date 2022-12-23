@@ -12,6 +12,8 @@ const VirtualRow = (props: ListChildComponentProps) => {
   return <TimesheetRow style={style} activityReportId={activityReportId} />;
 };
 
+const ITEM_SIZE = 35;
+
 interface Props {}
 
 export const TimesheetBody: FC<Props> = (props) => {
@@ -23,8 +25,8 @@ export const TimesheetBody: FC<Props> = (props) => {
     <FixedSizeList
       className="tbody"
       height={500}
-      width="100%"
-      itemSize={35}
+      width={ITEM_SIZE * (31 + 5 + 1)}
+      itemSize={ITEM_SIZE}
       itemData={activityReports}
       itemCount={activityReports.length}
       overscanCount={4}

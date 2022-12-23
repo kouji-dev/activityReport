@@ -1,14 +1,22 @@
 import { ActivityReportActions } from "activity-report/store/activity-report-sheet.state";
+import {
+  approveAllThunk,
+  rejectAllThunk,
+} from "activity-report/store/thunks/activity-report-sheet.thunks";
 import { useCallback, useMemo } from "react";
 import { useDispatch } from "store";
-import { Id } from "utils/types";
+import { Id, Void } from "utils/types";
 
 type TimehseetToolboxCellApi = {
-  declareAll: (activityReportId: Id) => void;
-  undeclareAll: (activityReportId: Id) => void;
+  declareAll: Void;
+  undeclareAll: Void;
+  rejectAll: Void;
+  approveAll: Void;
 };
 
-export const useTimesheetToolboxCell: (activityReportId: Id) => TimehseetToolboxCellApi = (activityReportId: Id) => {
+export const useTimesheetToolboxCell: (
+  activityReportId: Id
+) => TimehseetToolboxCellApi = (activityReportId: Id) => {
   const dispatch = useDispatch();
 
   const declareAll = useCallback(() => {
@@ -18,7 +26,7 @@ export const useTimesheetToolboxCell: (activityReportId: Id) => TimehseetToolbox
   const undeclareAll = useCallback(() => {
     dispatch(ActivityReportActions.undeclareAllThunk(activityReportId));
   }, []);
-  
+
   const approveAll = useCallback(() => {
     dispatch(approveAllThunk(activityReportId));
   }, []);
@@ -31,6 +39,8 @@ export const useTimesheetToolboxCell: (activityReportId: Id) => TimehseetToolbox
     () => ({
       declareAll,
       undeclareAll,
+      approveAll,
+      rejectAll,
     }),
     []
   );

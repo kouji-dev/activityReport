@@ -4,8 +4,11 @@ import { createAsyncThunk } from "utils/store-utils";
 import { Id } from "utils/types";
 import {
   ApproveActivitiesPayload,
+  ApproveAllPayload,
   RejectActivitiesPayload,
+  RejectAllPayload,
   RemoveActivitiesPayload,
+  ToggleActivitisStatusPayload,
 } from "../actions/activity-report-sheet.actions";
 import { ActivityReportSelectionActions } from "../activity-report-sheet-selection.state";
 import { ActivityReportActions } from "../activity-report-sheet.state";
@@ -107,7 +110,9 @@ export const toggleActivitisStatusThunk = createAsyncThunk<
   ToggleActivitisStatusThunkPayload
 >(`${namespace}/toggleActivitisStatusThunk`, async (payload, { dispatch }) => {
   const toggleActivitisStatusPayload: ToggleActivitisStatusPayload = payload;
-  dispatch(ActivityReportActions.toggleActivitisStatus(toggleActivitisStatusPayload));
+  dispatch(
+    ActivityReportActions.toggleActivitisStatus(toggleActivitisStatusPayload)
+  );
 });
 
 type ApproveAllThunkReturn = void;
@@ -115,7 +120,17 @@ type ApproveAllThunkPayload = Id;
 export const approveAllThunk = createAsyncThunk<
   ApproveAllThunkReturn,
   ApproveAllThunkPayload
->(`${namespace}/toggleActivitisStatusThunk`, async (payload, { dispatch }) => {
+>(`${namespace}/approveAllThunk`, async (payload, { dispatch }) => {
   const approveAllPayload: ApproveAllPayload = payload;
   dispatch(ActivityReportActions.approveAll(approveAllPayload));
+});
+
+type RejectAllThunkReturn = void;
+type RejectAllThunkPayload = Id;
+export const rejectAllThunk = createAsyncThunk<
+  RejectAllThunkReturn,
+  RejectAllThunkPayload
+>(`${namespace}/rejectAllThunk`, async (payload, { dispatch }) => {
+  const rejectAllPayload: RejectAllPayload = payload;
+  dispatch(ActivityReportActions.rejectAll(rejectAllPayload));
 });

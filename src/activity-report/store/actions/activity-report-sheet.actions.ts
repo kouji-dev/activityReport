@@ -1,6 +1,5 @@
 import { CaseReducer, PayloadAction } from "@reduxjs/toolkit";
 import {
-  getDefaultHalfDay,
   Selection,
   SheetCellStatus,
 } from "activity-report/timesheet/common-types";
@@ -145,5 +144,33 @@ export const toggleActivitisStatusAction: ToggleActivitisStatusAction = (
         activityReport.entities[day].status = status;
       }
     }
+  }
+};
+
+export type ApproveAllPayload = Id;
+type ApproveAllAction = CaseReducer<
+  ActivityReportSheetState,
+  PayloadAction<ApproveAllPayload>
+>;
+export const approveAllAction: ApproveAllAction = (state, action) => {
+  const activityReportId = action.payload;
+  for (const activity of Object.values(
+    state.entities[activityReportId].entities
+  )) {
+    activity.status = SheetCellStatus.APPROVED;
+  }
+};
+
+export type RejectAllPayload = Id;
+type RejectAllAction = CaseReducer<
+  ActivityReportSheetState,
+  PayloadAction<RejectAllPayload>
+>;
+export const rejectAllAction: RejectAllAction = (state, action) => {
+  const activityReportId = action.payload;
+  for (const activity of Object.values(
+    state.entities[activityReportId].entities
+  )) {
+    activity.status = SheetCellStatus.REJECTED;
   }
 };

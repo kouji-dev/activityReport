@@ -26,7 +26,9 @@ import { toServerFormat } from "utils/date-utils";
 import moment from "moment";
 import {
   approveActivitiesAction,
+  approveAllAction,
   rejectActivitiesAction,
+  rejectAllAction,
   removeActivitiesAction,
   toggleActivitisStatusAction,
 } from "./actions/activity-report-sheet.actions";
@@ -66,6 +68,8 @@ export const activityReportState = createSlice({
     approveActivities: approveActivitiesAction,
     rejectActivities: rejectActivitiesAction,
     toggleActivitisStatus: toggleActivitisStatusAction,
+    approveAll: approveAllAction,
+    rejectAll: rejectAllAction,
   },
   extraReducers: (builder) => {
     builder

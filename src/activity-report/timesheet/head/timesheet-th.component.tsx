@@ -43,7 +43,7 @@ export const TableHeadToolbox: FC<{}> = () => {
   return (
     <div className="th toolbox-head">
       <Popover content={content}>
-        <div className="head-empty">
+        <div className="toolbox-head-container">
           <SettingTwoTone />
         </div>
       </Popover>
