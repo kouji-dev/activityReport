@@ -1,6 +1,7 @@
 :root {
   --cell-width: 35px;
   --cell-height: 35px;
+  --head-height: 50px;
   --border-color: #f4f4f4;
   --cell-border-radius: 8px;
 }
@@ -46,6 +47,10 @@
   border: 1px solid var(--border-color);
   
   user-select: none;
+}
+
+.th {
+  height: var(--head-height);
 }
 
 .td {
