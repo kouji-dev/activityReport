@@ -1,10 +1,18 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { useSelector } from "react-redux";
-import { IRootState } from "../../store";
-import { Id } from "../../utils/types";
+import { IRootState } from "store";
+import { Id } from "utils/types";
 import { activityReportIdsSelector } from "../store/selectors/activity-report-sheet.selectors";
 import { TimesheetRow } from "./row/timesheet-row.component";
-import { TimesheetSelectionProvider } from "./row/selection/context/timesheet-selection.context";
+import { FixedSizeList, ListChildComponentProps } from "react-window";
+
+const VirtualRow = (props: ListChildComponentProps) => {
+  const { data, index, style } = props;
+  const activityReportId = data[index];
+  return <TimesheetRow style={style} activityReportId={activityReportId} />;
+};
+
+const ITEM_SIZE = 35;
 
 interface Props {}
 
@@ -14,13 +22,16 @@ export const TimesheetBody: FC<Props> = (props) => {
   );
 
   return (
-    <tbody>
-      {activityReports.map((activityReportId) => (
-          <TimesheetRow
-            key={activityReportId}
-            activityReportId={activityReportId}
-          />
-        ))}
-    </tbody>
+    <FixedSizeList
+      className="tbody"
+      height={500}
+      width={ITEM_SIZE * (31 + 5 + 1)}
+      itemSize={ITEM_SIZE}
+      itemData={activityReports}
+      itemCount={activityReports.length}
+      overscanCount={4}
+    >
+      {VirtualRow}
+    </FixedSizeList>
   );
 };

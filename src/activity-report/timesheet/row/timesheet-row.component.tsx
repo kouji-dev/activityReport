@@ -1,4 +1,4 @@
-import { FC, memo } from "react";
+import { CSSProperties, FC, memo } from "react";
 import { useSelector } from "react-redux";
 import { projectByActivityReportIdSelector } from "../../../project/project.selectors";
 import { TimesheetCell } from "./timesheet-cell.component";
@@ -10,13 +10,14 @@ import { Typography } from "antd";
 
 interface Props {
   activityReportId: Id;
+  style?: CSSProperties;
 }
 
 export const TimesheetRow: FC<Props> = (props) => {
-  const { activityReportId } = props;
+  const { activityReportId, style } = props;
   const columns = useSheetColumns();
   return (
-    <tr>
+    <div className="tr" style={style}>
       <ProjectTD activityReportId={activityReportId} />
       <TimesheetCellToolbox activityReportId={activityReportId} />
       {columns.map((col) => (
@@ -27,7 +28,7 @@ export const TimesheetRow: FC<Props> = (props) => {
         />
       ))}
       <TimesheetRowTotal activityReportId={activityReportId} />
-    </tr>
+    </div>
   );
 };
 
@@ -41,8 +42,8 @@ export const ProjectTD: FC<{ activityReportId: Id }> = memo((props) => {
 
   const { nom } = project;
   return (
-    <td className="context-cell">
+    <div className="td context-cell">
       <Typography.Text strong>{nom}</Typography.Text>
-    </td>
+    </div>
   );
 });

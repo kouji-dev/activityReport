@@ -35,12 +35,20 @@
 -   Toolbox (NF):
     -   context menu:
         -   select/unselect all
-        -   declare all
-        -   reject all absence
+        -   declare/undeclare all
+        -   reject/custom all absence
+        -   custom actions
     -   global event listener:
         -   bind all menu actions with shortcuts like (ctrl+A => select All)
     -   row:
         -   edit:
+<<<<<<< HEAD
+<<<<<<< HEAD
+            -   declare/undeclare all cells
+=======
+=======
+>>>>>>> 869704512100e8ede7a396cfc02b24f25998b6c3
             -[y]   select/unselect all cells
+>>>>>>> b4a676328f8bcfe8a9b07ba8c5c295ad712d7eee
         -   validate:
             -[y]   approve/reject all cells

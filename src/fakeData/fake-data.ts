@@ -21,7 +21,7 @@ import { ActivityReportSheetState } from "activity-report/store/activity-report-
 import { ProjectState } from "project/project.state";
 import moment from "moment";
 
-const fakeProjects = (p: number = 10) => {
+const fakeProjects = (p: number = 20) => {
   return [...Array(p).keys()].map(() => fakeProject());
 };
 

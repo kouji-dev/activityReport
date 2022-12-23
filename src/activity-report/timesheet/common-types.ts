@@ -97,4 +97,4 @@ export type UpdateOrRemovePayload = {
   remove: Record<string, string[]>;
 };
 
-export type Selection = Record<Id, Set<string>>;
+export type Selection = Record<Id, Set<Id> & Array<Id>>;

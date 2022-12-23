@@ -1,21 +1,18 @@
-import React from "react";
-import { useSheetColumns } from "../../../utils/date-utils";
 import { TimesheetColumnTotal } from "./timesheet-column-total.component";
 import { HeadCol } from "../head/timesheet-head.component";
 import { TimesheetTotal } from "./timesheet-total.component";
+import { useSheetColumns } from "utils/date-utils";
 
 export const TimesheetFooterTotal = () => {
   const columns = useSheetColumns();
 
   return (
-    <tfoot>
-      <tr>
-        <td colSpan={3}></td>
-        {columns.map((col: HeadCol, key) => (
-          <TimesheetColumnTotal key={key} {...col} />
-        ))}
-        <TimesheetTotal />
-      </tr>
-    </tfoot>
+    <div className="tfoot">
+      <div className="tf">Total</div>
+      {columns.map((col: HeadCol, key) => (
+        <TimesheetColumnTotal key={key} {...col} />
+      ))}
+      <TimesheetTotal />
+    </div>
   );
 };

@@ -4,3 +4,5 @@ export type Entity<T> = {
 };
 
 export type Id = number | string;
+
+export type Void = () => void;

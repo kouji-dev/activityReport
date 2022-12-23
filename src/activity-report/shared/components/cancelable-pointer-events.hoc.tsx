@@ -12,5 +12,5 @@ export interface CancelablePointerProps {
 export const CancalablePointer: FC<
   PropsWithChildren<CancelablePointerProps>
 > = (props) => {
-  return <td {...props}>{props.children}</td>;
+  return <div {...props}>{props.children}</div>;
 };
